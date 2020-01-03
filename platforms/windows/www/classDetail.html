@@ -93,7 +93,7 @@
 	</script>
 </head>
 
-<body class="theme-blue bg-indigo" style="background:#454477 !important;">
+<body id="classDetailPage" class="theme-blue bg-indigo" style="background:#454477 !important;">
 	
 <div style="margin:0px;padding:0px;position:fixed;background: #4568DC;
 background: -webkit-linear-gradient(to right, #B06AB3, #4568DC);
@@ -104,9 +104,9 @@ width:100%;height:100%; opacity: 0.8;"></div>
 		<nav class="navbar navbar-dark navbar-2 purple-gradient col-12">
 
 			<!-- Navbar brand -->
-			<a class="navbar-brand" href="#"><i class="fas fa-angle-left"></i></a>
+			<a class="navbar-brand" href="javascript:history.back()"><i class="fas fa-angle-left"></i></a>
 			<center>
-					<h5 class="text-white">Class Name</h5>
+					<h5 class="text-white" id="className"></h5>
 			</center>
 			<!-- Collapse button -->
 			<button class="navbar-toggler collapsed col-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent14" aria-controls="navbarSupportedContent14" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,13 +119,13 @@ width:100%;height:100%; opacity: 0.8;"></div>
 				<!-- Links -->
 				<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-user-alt"></i>&nbsp;Profile <span class="sr-only">(current)</span></a>
+					<a class="nav-link waves-effect waves-light" href="profile.html"><i class="fas fa-user-alt"></i>&nbsp;Profile <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-chart-line"></i>&nbsp;Progress Record</a>
+					<a class="nav-link waves-effect waves-light" href="bodyProgress.html"><i class="fas fa-chart-line"></i>&nbsp;Progress Record</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-id-card-alt"></i>&nbsp;Membership</a>
+					<a class="nav-link waves-effect waves-light" href="membership.html"><i class="fas fa-id-card-alt"></i>&nbsp;Membership</a>
 				</li>
 				</ul>
 				<!-- Links -->
@@ -165,7 +165,7 @@ width:100%;height:100%; opacity: 0.8;"></div>
 										<!-- Brief -->
 										<div class="brief">
 											<h5 class="blue-text h5" style="text-transform: uppercase;">What to know</h5>
-											<small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis tenetur sit voluptatem molestias ad neque veritatis! Alias natus, nobis laudantium, veritatis, atque illum ipsam nisi voluptas nesciunt harum laborum perspiciatis!</small>
+											<h6 id="classDesc"></h6>
 											<p></p>
 										</div>
 						
@@ -263,7 +263,7 @@ width:100%;height:100%; opacity: 0.8;"></div>
 			<div class="row">
 				<div class="col-12 col-lg-12">			
 					<div class="d-flex flex-column" style="position:fixed;bottom:0px;right:0px;left:0px;width:100%;">
-						<button class="btn btn-block btn-indigo waves-effect waves-light">
+						<button class="btn btn-block btn-indigo waves-effect waves-light" data-uri="view" data-target="classJoin" data-filter="classJoin">
 								Join Class
 						</button>
 					</div>
@@ -273,8 +273,7 @@ width:100%;height:100%; opacity: 0.8;"></div>
 	</div>	
 
 </div>
-<script type="text/javascript" src="cordova.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
+
 
 
 <!-- JQuery -->
@@ -292,6 +291,9 @@ width:100%;height:100%; opacity: 0.8;"></div>
 
 <!-- Select Plugin Js -->
 <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<script type="text/javascript" src="assets/js/script.js"></script>
+<script src="assets/js/onFunction.js"></script>
 
 
 <script type="text/javascript">

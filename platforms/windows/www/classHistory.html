@@ -45,7 +45,7 @@ width:100%;height:100%; opacity: 0.8;">
 		<nav class="navbar navbar-dark navbar-2 purple-gradient col-12">
 
 			<!-- Navbar brand -->
-			<a class="navbar-brand" href="#"><i class="fas fa-angle-left"></i></a>
+			<a class="navbar-brand" data-target="index" data-uri="read" data-filter="index">Logout</a>
 			<center>
 					<h5 class="text-white">Class History</h5>
 			</center>
@@ -60,10 +60,10 @@ width:100%;height:100%; opacity: 0.8;">
 				<!-- Links -->
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
-						<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-user-alt"></i>&nbsp;Profile <span class="sr-only">(current)</span></a>
+						<a class="nav-link waves-effect waves-light" data-target="profile" data-uri="view" data-filter="profile"><i class="fas fa-user-alt"></i>&nbsp;Profile <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-id-card-alt"></i>&nbsp;Membership</a>
+						<a class="nav-link waves-effect waves-light"  data-target="membership" data-uri="view" data-filter="membership"><i class="fas fa-id-card-alt"></i>&nbsp;Membership</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-cog"></i>&nbsp;Setting</a>
@@ -136,24 +136,25 @@ width:100%;height:100%; opacity: 0.8;">
 			</div> -->
 			<!-- Card Wider -->
 		<img src="https://uploads-ssl.webflow.com/5d1f053cee3b9da3d699a858/5d2aaced187e9368f0c098c9_gym.svg" class="mt-5" style="width:55%">
-		<h3 class="h3 mb-5">Oopss !,<br> You are not join any class</h3>
-		<div class="clearfix"></div>
-		<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating">Join Class Now</button>
+		<div id="classContent">
+
+		</div>
 		</div>
 	</div>
 	<div style="position:fixed;z-index:999;width:100%;bottom:0px;right:0px;left:0px;">
 		<ul class="nav nav-tabs nav-justified md-tabs indigo navRadiusNone" id="myTabJust" role="tablist">
 			<li class="nav-item waves-effect waves-light">
-				<a class="nav-link" id="home-tab-just" data-toggle="tab" href="#home-just" role="tab" aria-controls="home-just" aria-selected="true"><i class="fas fa-calendar-alt"></i></a>
+				<!-- <a class="nav-link" id="home-tab-just" data-toggle="tab" href="#home-just" role="tab" aria-controls="home-just" aria-selected="true"><i class="fas fa-calendar-alt"></i></a> -->
+				<a class="nav-link" href="classSchedule.html"><i class="fas fa-calendar-alt"></i></a>
 			</li>
 			<li class="nav-item waves-effect waves-light">
 				<a class="nav-link active" id="profile-tab-just" data-toggle="tab" href="#profile-just" role="tab" aria-controls="profile-just" aria-selected="false"><i class="fas fa-history"></i></a>
 			</li>
 			<li class="nav-item waves-effect waves-light">
-				<a class="nav-link" id="contact-tab-just" data-toggle="tab" href="#contact-just" role="tab" aria-controls="contact-just" aria-selected="false"><i class="fas fa-chart-line"></i></a>
+				<a class="nav-link" href="bodyProgress.html"><i class="fas fa-chart-line"></i></a>
 			</li>
 		</ul>
-	</div>	
+	</div>
 	<!-- end container card -->
 </div>
 
@@ -169,4 +170,5 @@ width:100%;height:100%; opacity: 0.8;">
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datedropper/2.0/datedropper.min.js"></script>
 <script type="text/javascript" src="assets/js/script.js"></script>
+<script src="assets/js/onFunction.js"></script>
 </html>

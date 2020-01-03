@@ -34,7 +34,7 @@
 
 </head>
 
-<body id="bodyProgressPage" class="theme-blue bg-indigo" style="background:#484684 !important;">
+<body id="classSchedulePage" class="theme-blue bg-indigo" style="background:#484684 !important;">
 <div style="margin:0px;padding:0px;position:fixed;background: #4568DC;
 background: -webkit-linear-gradient(to right, #B06AB3, #4568DC);
 background: linear-gradient(to right, #B06AB3, #4568DC);
@@ -97,148 +97,7 @@ width:100%;height:100%; opacity: 0.8;">
 	</div>
 	<!-- container card -->
 	<div style="background:#fff;width:100%;position:absolute;min-height:100%;right:0px; left:0px;top:220px;border-radius: 0 18rem 0px 0px;">
-		<div style="width:90%;margin:0px auto;margin-top:-2%;z-index:3;">
-
-			<!-- Card Wider -->
-			<div class="card card-cascade wider">
-
-				<!-- Card content -->
-				<div class="card-body card-body-cascade text-center">
-					<div class="row">
-						<div class="col-8">
-								<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">
-									<!-- Excerpt -->
-									<div class="excerpt">
-						
-										<!-- Brief -->
-										<div class="brief">
-											<h5 class="blue-text">Class Name</h5>
-											<small>Anna Smith added
-											2 new</small>
-										</div>
-						
-										<!-- Added images -->
-										<div class="added-images">
-											<img src="https://mdbootstrap.com/img/Photos/Others/images/71.jpg" width="20%" class="z-depth-1 rounded ">
-											<img src="https://mdbootstrap.com/img/Photos/Others/images/74.jpg" width="20%" class="z-depth-1 rounded">
-										</div>
-						
-										<!-- Feed footer -->
-										<div class="feed-footer">
-											<a class="like">
-												<small>
-													<i class="fas fa-heart"></i>
-													<span>18 likes</span>
-												</small>
-											</a>
-										</div>
-						
-									</div>
-									<!-- Excerpt -->
-					
-								</div>
-						</div>
-						<div class="col-4">
-							<h3 class="h3 text-default">07.00</h3>
-							<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white"><i class="fas fa-check"></i></a>
-							<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-8">
-								<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">
-									<!-- Excerpt -->
-									<div class="excerpt">
-						
-										<!-- Brief -->
-										<div class="brief">
-											<h5 class="blue-text">Class Name</h5>
-											<small>Anna Smith added
-											2 new</small>
-										</div>
-						
-										<!-- Added images -->
-										<div class="added-images">
-											<img src="https://mdbootstrap.com/img/Photos/Others/images/71.jpg" width="20%" class="z-depth-1 rounded ">
-											<img src="https://mdbootstrap.com/img/Photos/Others/images/74.jpg" width="20%" class="z-depth-1 rounded">
-										</div>
-						
-										<!-- Feed footer -->
-										<div class="feed-footer">
-											<a class="like">
-												<small>
-													<i class="fas fa-heart"></i>
-													<span>18 likes</span>
-												</small>
-											</a>
-										</div>
-						
-									</div>
-									<!-- Excerpt -->
-					
-								</div>
-						</div>
-						<div class="col-4">
-							<h3 class="h3 text-default">07.00</h3>
-							<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white"><i class="fas fa-check"></i></a>
-							<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>
-						</div>
-					</div>
-				</div>
-
-			</div>
-			<!-- Card Wider -->
-			<div class="clearfix"></div><br>
-			<!-- Card Wider -->
-			<div class="card card-cascade wider">
-
-					<!-- Card content -->
-					<div class="card-body card-body-cascade text-center">
-						
-							<div class="row">
-								<div class="col-8">
-										<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">
-											<!-- Excerpt -->
-											<div class="excerpt">
-								
-												<!-- Brief -->
-												<div class="brief">
-													<h5 class="blue-text">Class Name</h5>
-													<small>Anna Smith added
-													2 new</small>
-												</div>
-								
-												<!-- Added images -->
-												<div class="added-images">
-													<img src="https://mdbootstrap.com/img/Photos/Others/images/71.jpg" width="20%" class="z-depth-1 rounded ">
-													<img src="https://mdbootstrap.com/img/Photos/Others/images/74.jpg" width="20%" class="z-depth-1 rounded">
-												</div>
-								
-												<!-- Feed footer -->
-												<div class="feed-footer">
-													<a class="like">
-														<small>
-															<i class="fas fa-heart"></i>
-															<span>18 likes</span>
-														</small>
-													</a>
-												</div>
-								
-											</div>
-											<!-- Excerpt -->
-							
-										</div>
-								</div>
-								<div class="col-4">
-									<h3 class="h3 text-default">07.00</h3>
-									<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white"><i class="fas fa-check"></i></a>
-									<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>
-								</div>
-							</div>
-					</div>
-	
-				</div>
-				<!-- Card Wider -->
+		<div style="width:90%;margin:0px auto;margin-top:-2%;z-index:3;" id="classScheduleData">
 
 		</div>
 	</div>	
@@ -248,10 +107,11 @@ width:100%;height:100%; opacity: 0.8;">
 				<a class="nav-link active" id="home-tab-just" data-toggle="tab" href="#home-just" role="tab" aria-controls="home-just" aria-selected="true"><i class="fas fa-calendar-alt"></i></a>
 			</li>
 			<li class="nav-item waves-effect waves-light">
-				<a class="nav-link" id="profile-tab-just" data-toggle="tab" href="#profile-just" role="tab" aria-controls="profile-just" aria-selected="false"><i class="fas fa-history"></i></a>
+				<!-- <a class="nav-link" id="profile-tab-just" data-toggle="tab" href="#profile-just" role="tab" aria-controls="profile-just" aria-selected="false"><i class="fas fa-history"></i></a> -->
+				<a class="nav-link" href="classHistory.html"><i class="fas fa-history"></i></a>
 			</li>
 			<li class="nav-item waves-effect waves-light">
-				<a class="nav-link" id="contact-tab-just" data-toggle="tab" href="#contact-just" role="tab" aria-controls="contact-just" aria-selected="false"><i class="fas fa-chart-line"></i></a>
+				<a class="nav-link" href="bodyProgress.html"><i class="fas fa-chart-line"></i></a>
 			</li>
 		</ul>
 	</div>	
@@ -274,7 +134,8 @@ width:100%;height:100%; opacity: 0.8;">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/js/mdb.min.js"></script>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datedropper/2.0/datedropper.min.js"></script>
-
+<script type="text/javascript" src="assets/js/script.js"></script>
+<script src="assets/js/onFunction.js"></script>
 <script>
 	// $( "#demo" ).dateDropper();
 	$(function() {

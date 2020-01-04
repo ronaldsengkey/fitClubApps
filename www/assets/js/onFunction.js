@@ -177,7 +177,7 @@ function appendMembershipData(dataProfile){
 			buttonHtml = '<button type="button" class="btn btn-primary btn-block"  data-toggle="modal" data-target="#modalPoll-1">Join Member</button>';
 			break;
 		default:
-			html = "Hi,&nbsp;<b id='userName'></b><br> you'r registered on <b id='memberCatName'></b> membership.<br>"+
+			html = "Hi,&nbsp;<b id='userName'>"+dataProfile.data.name+"</b><br> you'r registered on <b id='memberCatName'></b> membership.<br>"+
 			"<small><span class='fa fa-calendar'></span>&nbsp;&nbsp;Expired date &nbsp;"+
 			"<label class='label label-warning' id='expDate'></label>"+
 			"<br><span class='fa fa-star'></span>&nbsp;&nbsp;Privilage &nbsp;"+

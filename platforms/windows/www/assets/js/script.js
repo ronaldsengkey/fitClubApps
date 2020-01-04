@@ -401,7 +401,8 @@ function postData(uri, target, dd) {
 						window.location.href = "paymentMethod.html";
 						break;
 					default:
-						window.location.href = "paymentMethod.html";
+						alert('msih failed',callback);
+						// window.location.href = "paymentMethod.html";
 						break;
 				}
 			},

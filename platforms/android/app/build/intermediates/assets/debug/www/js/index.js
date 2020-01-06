@@ -45,33 +45,9 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
+    },
+    onerror:function (err, fileName, lineNumber) {
+        // alert or console.log a message
+        alert(fileName, 'Line:', lineNumber, 'Error:', e.message);
     }
-	
-	// cordova.plugins.notification.local.schedule({
-		// title: 'My first notification',
-		// text: 'Thats pretty easy...',
-		// foreground: true
-	// });
-	
-	
-	// function showAlert() {
-	// navigator.notification.alert(
-		// 'You are the winner!',  // message
-		// 'Game Over',            // title
-		// 'Done'                  // buttonName
-	// );
-	// }
-
-	// // Beep three times
-	// //
-	// function playBeep() {
-		// navigator.notification.beep(3);
-	// }
-
-	// // Vibrate for 2 seconds
-	// //
-	// function vibrate() {
-		// navigator.notification.vibrate(2000);
-	// }
-	// End function Listener cordova
 };

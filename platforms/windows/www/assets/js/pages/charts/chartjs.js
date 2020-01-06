@@ -23,10 +23,10 @@ function getChartJs(type) {
         config = {
             type: 'line',
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: ["Fat Level", "Blood Pressure"],
                 datasets: [{
                     label: "My First dataset",
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    data: [500, 20],
                     borderColor: 'rgba(0, 188, 212, 0.75)',
                     backgroundColor: 'rgba(0, 188, 212, 0.3)',
                     pointBorderColor: 'rgba(0, 188, 212, 0)',
@@ -34,7 +34,7 @@ function getChartJs(type) {
                     pointBorderWidth: 1
                 }, {
                         label: "My Second dataset",
-                        data: [28, 48, 40, 19, 86, 27, 90],
+                        data: [0, 111],
                         borderColor: 'rgba(233, 30, 99, 0.75)',
                         backgroundColor: 'rgba(233, 30, 99, 0.3)',
                         pointBorderColor: 'rgba(233, 30, 99, 0)',

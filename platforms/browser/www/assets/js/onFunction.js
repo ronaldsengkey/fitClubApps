@@ -109,8 +109,8 @@ $(document).on('click','button, a',function(){
 			} else if(filter == 'joinMember' && target == 'joinMember'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
 				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val()};
-			} else if(filter == 'personalBodyProgress' && filter == 'bodyProgress'){
-				data = {'categories' : $('select#categories').val(), 'value':$('#progressValue').val()};
+			} else if(filter == 'personalBodyProgress' && target == 'bodyProgress'){
+				data = {'prCat' : $('select#categories').val(), 'dataValue':$('#progressValue').val()};
 			}
 			console.log("check data =>", JSON.stringify(data));
 			postData(uri,target,data);
@@ -147,20 +147,25 @@ $(document).on('click','button, a',function(){
 			} else if(filter == 'joinMember'){
 				window.location.href="joinMember.html";
 			} else if(filter == 'classJoin'){
-				defineAllowed();
+				defineAllowed(filter);
+			} else if(filter == 'goToClassMembership'){
+				window.location.href="membership.html";
+			} else if(filter == 'listAvailableClass'){
+				window.location.href="classAvailableList.html";
 			}
 		}
 		
 	}
 });
 
-function defineAllowed(){
+function defineAllowed(target){
 	let profile = JSON.parse(localStorage.getItem('dataProfile'));
 	if(profile.data.memberId == null && profile.data.memberCat == null){
 		window.location.href="membership.html";
 	} else {
-		//able to join class
-		data = {};
+		// TODO able to join class (empty param)
+		data = {'token':profile.data.accessToken,'scheduleId':$('#schedule_id').val(),'action':'join','memberId':String(profile.data.memberId)};
+		console.log('param join class',data);
 		postData(uri,target,data);
 	}
 }
@@ -168,6 +173,7 @@ function defineAllowed(){
 function appendMembershipData(dataProfile){
 	var html;
 	var buttonHtml;
+	var classButton;
 	switch(dataProfile.data.memberCat){
 		case null:
 			html = 'Below are the privileges you will get if u join as a member:'+
@@ -177,12 +183,14 @@ function appendMembershipData(dataProfile){
 			buttonHtml = '<button type="button" class="btn btn-primary btn-block"  data-toggle="modal" data-target="#modalPoll-1">Join Member</button>';
 			break;
 		default:
-			html = "Hi,&nbsp;<b id='userName'></b><br> you'r registered on <b id='memberCatName'></b> membership.<br>"+
+			html = "Hi,&nbsp;<b id='userName'>"+dataProfile.data.name+"</b><br> you'r registered on <b id='memberCatName'></b> membership.<br>"+
 			"<small><span class='fa fa-calendar'></span>&nbsp;&nbsp;Expired date &nbsp;"+
 			"<label class='label label-warning' id='expDate'></label>"+
 			"<br><span class='fa fa-star'></span>&nbsp;&nbsp;Privilage &nbsp;"+
 			"<br><span class='fa fa-book'></span>&nbsp;&nbsp;Policy &nbsp;</small>";
+			classButton = '<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-uri="view" data-filter="listAvailableClass" data-target="listAvailableClass">Check Available Class</button>'; 
 			buttonHtml = '<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalPoll-1">Upgrade Member</button>';
+			$('#defineClassMemberButton').append(classButton);
 			break;
 	}
 	$('#defineMembershipContent').append(html);
@@ -227,6 +235,17 @@ $(document).on('keyup','.search', function(){
 $(document).on('keyup','.classSearch', function(){
 	var value = $(this).val();
 	$('.classList').each(function(){
+		if ($(this).data('class').toLowerCase().indexOf(value.toLowerCase()) > -1) {
+			$(this).fadeIn();
+		} else {
+			$(this).fadeOut();
+		}
+	});
+});
+
+$(document).on('keyup','.availableClassSearch', function(){
+	var value = $(this).val();
+	$('.classAvailableeList').each(function(){
 		if ($(this).data('class').toLowerCase().indexOf(value.toLowerCase()) > -1) {
 			$(this).fadeIn();
 		} else {

@@ -1,7 +1,7 @@
 ﻿// const e = require("express");
 
-// var urlService = 'http://149.129.241.18:8888/ronaldSengkey/fitClub/api/v1';
-var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://149.129.241.18:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -202,8 +202,8 @@ function getData(param, extraParam) {
 	switch (param) {
 		case "memberClass":
 			//FIXME 
-			directory += '/class/memberClass/' + profile.data.accessToken;
-			// directory += '/class/memberClass/history' + profile.data.accessToken;
+			// directory += '/class/memberClass/' + profile.data.accessToken;
+			directory += '/class/memberClass/history' + profile.data.accessToken;
 			break;
 		case 'classList':
 			directory += '/class/' + profile.data.accessToken;

@@ -34,9 +34,9 @@
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/icons/apple-touch-icon-114-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/icons/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="assets/images/icons/apple-touch-icon-57-precomposed.png">
-	<!-- <link rel="shortcut icon" href="assets/images/DAS Xpress.png"> -->
+	<link rel="shortcut icon" href="assets/images/DAS Xpress.png">
 
-	<!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -54,7 +54,7 @@
     <!-- Morris Chart Css-->
     <link href="assets/plugins/morrisjs/morris.css" rel="stylesheet" />
 	
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/style_.css" rel="stylesheet">
     <link href="assets/css/select2.min.css" rel="stylesheet">
     <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
 	<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
@@ -103,6 +103,34 @@
 </head>
 
 <body class="theme-blue bg-indigo" style="background:#484684 !important;">
+
+	<!-- The Modal -->
+	<div class="modal" id="largeModal">
+		<div class="modal-dialog">
+		<div class="modal-content" style="background: #4568DC;
+		background: -webkit-linear-gradient(to right, #B06AB3, #4568DC);
+		background: linear-gradient(to right, #B06AB3, #4568DC)">
+	
+			<!-- Modal Header -->
+			<!-- <div class="modal-header">
+			<h4 class="modal-title">Modal Heading</h4>
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div> -->
+	
+			<!-- Modal body -->
+			<div class="modal-body">
+			Modal body..
+			</div>
+	
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-block" id="submitOtp">Confirm</button>
+				<button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Cancel</button>
+			</div>
+	
+		</div>
+		</div>
+	</div>
 	
 	 <!-- Page Loader -->
     <div class="page-loader-wrapper">
@@ -120,20 +148,37 @@
             <p>Please wait...</p>
         </div>
     </div>
-    <!-- #END# Page Loader -->
+	<!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
 <section id="registerPage">
 	<div class="bg-img1 mainWrap">
-	<div style="position:relative;width:80%;margin:0px auto;">
-		<div class="card" style="border-radius:15px;margin-top:100px;">
-		<div class="body" id="formContent" style="border-radius:15px;">
+	<div class="container-wrap" style="margin-top:200px;">
+		<!-- <div class="card"> -->
+		<!-- <div class="body"> -->
 			<div class="clearfix"></div><br>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<label class="text-gradient">Name</label>
-					<input type="text" class="form-control radiusNone borderB shadowNone animated bounceInUp" id="name" placeholder="Name">
+					<label>Name</label>
+					<input type="text" class="form-control radiusNone borderB shadowNone " id="name" placeholder="Name">
+					<div class="clearfix"></div><br>
+				</div>
+			</div>
+			<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<label>Address</label>
+						<input type="text" class="form-control radiusNone borderB shadowNone " id="address" placeholder="Address">
+						<div class="clearfix"></div><br>
+					</div>
+				</div>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<label>Gender</label>
+					<select id="gender" class="form-control radiusNone borderB shadowNone ">
+						<option value="1">Male</option>
+						<option value="2">Female</option>
+					</select>
 					<div class="clearfix"></div><br>
 				</div>
 			</div>
@@ -149,37 +194,37 @@
 					<!-- <div class="clearfix"></div><br> -->
 				<!-- </div> -->
 			<!-- </div> -->
-			<!-- <div class="row"> -->
-				<!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> -->
-					<!-- <label>Phone</label> -->
-					<!-- <input type="text" class="form-control radiusNone borderB shadowNone" placeholder="08xxxx"> -->
-					<!-- <div class="clearfix"></div><br> -->
-				<!-- </div> -->
-			<!-- </div> -->
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<label class="text-gradient">Email</label>
-					<input type="email" class="form-control radiusNone borderB shadowNone animated bounceInUp" id="email" placeholder="mail@domainxx">
+					<label>Phone</label>
+					<input type="text" class="form-control radiusNone borderB shadowNone" id="phone" placeholder="08xxxx">
 					<div class="clearfix"></div><br>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<label class="text-gradient">Password</label>
-					<input type="password" class="form-control radiusNone borderB shadowNone animated bounceInUp" id="password" placeholde="password">
+					<label>Email</label>
+					<input type="email" class="form-control radiusNone borderB shadowNone " id="email" placeholder="mail@domainxx">
 					<div class="clearfix"></div><br>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<button data-uri="create" data-target="user" data-filter="memberRegister" class="btn btn-lg btn-block btn-primary bg-gradient waves-effect">Register Now</button>
-					<div class="clearfix"></div><br>
-					<small>I am registered <a href="javascript:void(0);" data-target="login">Login Now</a></small>
+					<label>Password</label>
+					<input type="password" class="form-control radiusNone borderB shadowNone " id="password" placeholde="password">
 					<div class="clearfix"></div><br>
 				</div>
 			</div>
-		</div>
-		</div>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<button data-uri="create" data-target="user" data-filter="memberRegister" class=" btn btn-lg btn-block btn-primary waves-effect">Register Now</button>
+					<div class="clearfix"></div><br>
+					<small>I am registered <a href="javascript:void(0);" data-target="index">Login Now</a></small>
+					<div class="clearfix"></div><br>
+				</div>
+			</div>
+		<!-- </div> -->
+		<!-- </div> -->
 	</div>
 	</div>
 </section>
@@ -187,6 +232,7 @@
 <script type="text/javascript" src="js/index.js"></script>
 <script src="assets/plugins/jquery/jquery.min.js"></script>
 <script src="assets/js/script.js"></script>
+<script src="assets/js/onFunction.js"></script>
 
 <script src="assets/js/select2.min.js"></script>
 

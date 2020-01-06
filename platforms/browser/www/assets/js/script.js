@@ -1,7 +1,7 @@
 ﻿// const e = require("express");
 
-var urlService = 'http://149.129.241.18:8888/ronaldSengkey/fitClub/api/v1';
-// var urlService = 'http://192.168.1.9:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://149.129.241.18:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -43,6 +43,9 @@ $(function () {
 	if ($('#bodyProgressPage').length > 0) {
 		validate('bodyProgress');
 	}
+	if($('#classAvailableListPage').length > 0){
+		validate('availableClass');
+	}
 	var dataProfilee = parseUserData();
 	if (dataProfilee) {
 		console.log('profile data', dataProfilee);
@@ -60,6 +63,7 @@ function logout() {
 
 function notification(cat, T) {
 	if (cat == 200) {
+		console.log('masuk cat 200');
 		swal({
 			title: "Proccess success!",
 			text: T,
@@ -114,6 +118,9 @@ function validate(param) {
 	let dataProfile = JSON.parse(localStorage.getItem("dataProfile"));
 	if (dataProfile) {
 		switch (param) {
+			case "availableClass":
+				getData('availableClass');
+				break;
 			case "login":
 				window.location = "classHistory.html";
 				break;
@@ -194,7 +201,9 @@ function getData(param, extraParam) {
 	let directory = urlService;
 	switch (param) {
 		case "memberClass":
+			//FIXME 
 			directory += '/class/memberClass/' + profile.data.accessToken;
+			// directory += '/class/memberClass/history' + profile.data.accessToken;
 			break;
 		case 'classList':
 			directory += '/class/' + profile.data.accessToken;
@@ -215,6 +224,37 @@ function getData(param, extraParam) {
 			$('.chartProg').html('');
 			directory += '/member/personalRecord/' + profile.data.accessToken;
 			break;
+		case "availableClass":
+			directory += '/class/memberClass/' + profile.data.accessToken;
+			break;
+	}
+	if(param == 'bodyProgress'){
+		$.ajax({
+			url: urlService + '/member/personalRecord/category/' + profile.data.accessToken,
+			crossDomain: true,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"Accept-Encoding": "gzip, deflate",
+				"Connection": "keep-alive",
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian get pr cat', callback);
+				switch (callback.responseCode) {
+					case "200":
+						callback.data.forEach(domPrCat);
+						break;
+					default:
+						notification(500,'empty data');
+						break;
+				}
+			}
+		})
 	}
 	$.ajax({
 		url: directory,
@@ -251,6 +291,8 @@ function getData(param, extraParam) {
 					} else if (param == 'bodyProgress') {
 						appendEmptyChart();
 						$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
+					} else if (param == 'availableClass') {
+						appendEmptyAvailableClass();
 					} else {
 						alert(callback.responseMessage);
 					}
@@ -263,23 +305,88 @@ function getData(param, extraParam) {
 					} else if (param == 'classSchedule') {
 						callback.data.forEach(domClassSchedule);
 					} else if (param == 'bodyProgress') {
-						// callback.data.forEach(domClassSchedule);
-						console.log('i dont know what to do yet');
-					}
+						// callback.data.forEach(domBodyProgressChart);
+						defineChart(callback.data);
+						// console.log('i dont know what to do yet');
+						appendEmptyChart();
+						$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
+					} else if (param == 'availableClass') {
+						callback.data.forEach(appendClassAvailableData);
+					} 
 					break;
 			}
 		}
 	})
 }
 
+var splitCategory = [];
+function defineChart(data){
+	data.forEach(domBodyProgressChart);
+
+	var uniqueNames = [];
+	$.each(splitCategory, function(i, el){
+		if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+	});
+	console.log('unique cat',uniqueNames);
+	// defineCategory(uniqueNames,data);
+}
+
+// function defineCategory(categoryData,data){
+	
+// 	data.forEach(element => {
+// 		if(categoryData.includes(element.categoryName)){
+
+// 		}
+// 	});
+// }
+
+function domBodyProgressChart(data,index){
+	splitCategory.push(data.categoryName);
+}
+
+function domPrCat(data,index){
+	let htmlPr = '<option value='+data.id+'>'+data.categoryName+'</option>';
+	$('#categories').append(htmlPr);
+}
+
 function appendEmptyChart() {
-	let htmlChart = '<canvas id="doughnut_chart" class="animated flipInX" height="188"></canvas>';
+	let htmlChart = '<canvas id="line_chart" class="animated flipInX" height="188"></canvas>';
 	$('.chartProg').append(htmlChart);
 }
 
 function domClassDetail(result) {
-	$('#className').html(result.name);
+	$('#className').html(result.className);
 	$('#classDesc').html(result.descript);
+	$('#schedule_id').val(result.scheduleId);
+	let coachHtml = '<div class="row mb-3">'+
+	'<div class="col-lg-3 col-3">'+
+		'<div class="news">'+
+			'<div class="label">'+
+				'<img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(20)-mini.jpg" style="width:110%;" class="rounded-circle z-depth-1-half">'+
+			'</div>'+
+		'</div>'+
+	'</div>'+
+	'<div class="col-lg-9 col-9">'+
+		'<div class="excerpt mb-0">'+
+				'<div class="brief">'+
+				'<a class="blue-text">'+result.coachName+'</a>'+
+				'<div class="date">3 days ago</div>'+
+				'</div>'+
+				'<div class="feed-footer">'+
+				'<span>'+
+					'<a>47</a>'+
+				'</span>'+
+				'<a class="thumbs" data-toggle="tooltip" data-placement="top" title="" data-original-title="I like it">'+
+					'<i class="fas fa-thumbs-up"></i>'+
+				'</a>'+
+				'<a class="thumbs" data-toggle="tooltip" data-placement="top" title="" data-original-title="I dont like it">'+
+					'<i class="fas fa-thumbs-down"></i>'+
+				'</a>'+
+				'</div>'+
+			'</div>'+
+	'</div>'+
+	'</div>';
+	$('#coachListDetail').append(coachHtml);
 }
 
 function domClassSchedule(data, index) {
@@ -294,13 +401,12 @@ function domClassSchedule(data, index) {
 		'<div class="feed-footer">' +
 		'<div>' + data.coach_name + '</div>' +
 		'<a class="like">' +
-		'<small><i class="fas fa-heart"></i><span>18 likes</span></small>' +
 		'</a></div></div></div></div>' +
 		'<div class="col-4">' +
-		'<h3 class="h3 text-default">' + data.class_start_time + '</h3>' +
+		'<h4 class="h4 text-default">' + data.class_start_time + '</h4>' +
 		'<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.class_id + ')"><i class="fas fa-check"></i></a>' +
 		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
-		'<h3 class="h3 text-default">' + data.class_end_time + '</h3>' +
+		'<h4 class="h4 text-default">' + data.class_end_time + '</h4>' +
 		'</div>' +
 		'</div>' +
 		'</div></div><div class="clearfix"></div><br/>';
@@ -314,11 +420,46 @@ function appendEmptyClass() {
 	$('#classContent').append(html);
 }
 
+function appendEmptyAvailableClass(){
+	let html = '<h3 class="h3 mb-5">Oopss !,<br> Empty available class</h3>' +
+		'<div class="clearfix"></div>' +
+		'<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-uri="view" data-filter="goToClassMembership" data-target="goToClassMembership">Join as a Member now!</button>';
+	$('#classAvailableListData').append(html);
+}
+
 function toClassDetail(id) {
 	// let profileData = parseUserData();
 	// let data = {'token' : profileData.data.accessToken,'classId' : id};
 	// postData('','detailClass',data);
 	window.location.href = "classDetail.html?id=" + id;
+}
+
+function appendClassAvailableData(data, index) {
+	let searchPlaceholder = '<div class="md-form input-group col-12" style="margin-top:-30px;">'+
+		'<input type="text" class="form-control text-white text-center availableClassSearch" placeholder="Looking for ?"'+
+			'style="font-size:1.50em;font-weight:500" aria-describedby="material-addon2">'+
+		'<div class="input-group-append">'+
+			'<span class="input-group-text md-addon" id="material-addon2">'+
+				'<i class="fas fa-pencil-alt text-white"></i></span>'+
+		'</div>'+
+	'</div>';
+	let html = '<div class="card card-cascade wider classAvailableeList mb-3" onclick="toClassDetail(' + data.id + ')" data-id=' + data.id + ' data-class="' + data.name + '">' +
+		'<div class="card-body card-body-cascade text-center">' +
+		'<div class="row"><div class="col-8">' +
+		'<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.name + '</h5></div>' +
+		'</div>' +
+		'</div>'
+	'</div>' +
+	'<div class="col-4">' +
+	'<h3 class="h3 text-default">07.00</h3>' +
+	'<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-target="classDetail" data-filter="classDetail" data-uri="read">Join</button>' +
+	'</div>' +
+	'</div>' +
+	'</div>' +
+	'</div>';
+	$('#searchPlace').append(searchPlaceholder);
+	$('#classAvailableListData').append(html);
 }
 
 function appendClassData(data, index) {
@@ -411,24 +552,53 @@ function postData(uri, target, dd) {
 			}
 		});
 	} else if (target == 'classJoin') {
-		var userData = parseUserData();
 		$.ajax({
-			url: urlService + '/member/act' + userData.accessToken,
+			url: urlService + '/member/act',
 			type: "POST",
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
-			// data: JSON.stringify(dd),
+			data: JSON.stringify(dd),
 			timeout: 7000,
 			success: function (callback) {
 				loadingDeactive();
+				console.log('class join callback',callback);
 				switch (callback.responseCode) {
 					case "200":
-						notification(200, "Success join class")
+						notification(200, "Success join class");
+						window.location.href="classSchedule.html";
 						break;
 					default:
 						notification(500, "failed join class" + callback.responseMessage);
+						break;
+				}
+			},
+			error: function () {
+				loadingDeactive();
+			}
+		});
+	} else if (target == 'bodyProgress') {
+		let profile = JSON.parse(localStorage.getItem('dataProfile'));
+		$.ajax({
+			url: urlService + '/member/personalRecord/' + profile.data.accessToken,
+			type: "POST",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: JSON.stringify(dd),
+			timeout: 7000,
+			success: function (callback) {
+				loadingDeactive();
+				console.log('body progress',callback);
+				switch (callback.responseCode) {
+					case "200":
+						notification(200, "Success create body progress record");
+						window.location.href="bodyProgress.html";
+						break;
+					default:
+						notification(500, "failed create body progress record" + callback.responseMessage);
 						break;
 				}
 			},

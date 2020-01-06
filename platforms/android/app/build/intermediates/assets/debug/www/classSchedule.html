@@ -1,141 +1,176 @@
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" style="display: none;margin-top:35%;">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content modal-col-purple" style="background: #6a3093;background: -webkit-linear-gradient(to left, #a044ff, #6a3093);background: linear-gradient(to left, #a044ff, #6a3093);">
-			<!-- <div class="modal-header"> -->
-				<!-- <h4 class="modal-title" id="defaultModalLabel">Modal title</h4> -->
-			<!-- </div> -->
-			<div class="modal-body">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales orci ante, sed ornare eros vestibulum ut. Ut accumsan
-				vitae eros sit amet tristique. Nullam scelerisque nunc enim, non dignissim nibh faucibus ullamcorper.
-				Fusce pulvinar libero vel ligula iaculis ullamcorper. Integer dapibus, mi ac tempor varius, purus
-				nibh mattis erat, vitae porta nunc nisi non tellus. Vivamus mollis ante non massa egestas fringilla.
-				Vestibulum egestas consectetur nunc at ultricies. Morbi quis consectetur nunc.
-			</div>
-			<div class="modal-footer">
-				<div class="text-center">
-					<button type="button" id="gabungClass" data-uri="create" data-filter="gabungClass" data-target="memberActivity" class="btn btn-lg btn-block btn-primary waves-effect">Join&nbsp;<i class="fa fa-member"></i></button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<title>Fit Club</title>
+	<meta name="description" content="">
+	<meta name="msapplication-tap-highlight" content="no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+	<!-- Favicons -->
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/icons/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/icons/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/icons/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="assets/images/icons/apple-touch-icon-57-precomposed.png">
+	<!-- <link rel="shortcut icon" href="assets/images/DAS Xpress.png"> -->
+
+	<!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+	<link href="assets/css/themes/all-themes.css" rel="stylesheet" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+	<!-- Bootstrap core CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Material Design Bootstrap -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
+	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/datedropper/2.0/datedropper.min.css" rel="stylesheet">
+
+
+</head>
+
+<body id="classSchedulePage" class="theme-blue bg-indigo" style="background:#484684 !important;">
 <div style="margin:0px;padding:0px;position:fixed;background: #4568DC;
 background: -webkit-linear-gradient(to right, #B06AB3, #4568DC);
 background: linear-gradient(to right, #B06AB3, #4568DC);
-width:100%;height:100%; opacity: 0.8;"></div>
-<div style="width:90%;margin:0px auto;">
-	<div class="clearfix"></div><br>
-	<div class="row" style="margin-left:0px;margin-right:0px;z-index:1;">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-justify">
+width:100%;height:100%; opacity: 0.8;">
+</div>
+
+<div class="container-fluid">
+	<div style="position:fixed;z-index:999;width:100%;top:0px;right:0px;left:0px;">
+		<nav class="navbar navbar-dark navbar-2 purple-gradient col-12">
+
+			<!-- Navbar brand -->
+			<a class="navbar-brand" href="#"><i class="fas fa-angle-left"></i></a>
+			<center>
+					<h5 class="text-white">Schedule</h5>
+			</center>
+			<!-- Collapse button -->
+			<button class="navbar-toggler collapsed col-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent14" aria-controls="navbarSupportedContent14" aria-expanded="false" aria-label="Toggle navigation">
+				<img src="https://media.gq.com/photos/56cca7d9154b2d0e6b12585d/1:1/w_80,c_limit/john-jannuzzi.jpg" width="100%" class="rounded-circle z-depth-0 float-right" alt="avatar image">
+			</button>
+
+			<!-- Collapsible content -->
+			<div class="navbar-collapse collapse" id="navbarSupportedContent14">
+
+				<!-- Links -->
+				<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-user-alt"></i>&nbsp;Profile <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-chart-line"></i>&nbsp;Progress Record</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link waves-effect waves-light" href="#"><i class="fas fa-id-card-alt"></i>&nbsp;Membership</a>
+				</li>
+				</ul>
+				<!-- Links -->
+
+			</div>
+			<!-- Collapsible content -->
+
+		</nav>
+	</div>
+
+	<div class="row" style="padding-top:22%;">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-sm-12 text-justify">
 			<div class="text-center" >
-				<img src="assets/images/classSchedule.png" style="width:60%;">
-				<h3 id="titleClass">Class Title</h3>
-				<small>schedule date</small>
-				<div class="clearfix"></div><br/>
+				<img src="https://assets-global.website-files.com/5adef433fffd5a249fa40da0/5afbf6b5ab090f1b38d98857_Projectmanager.svg" style="width:35%;opacity: 0.4;">
+				<!-- <h3 id="titleClass">Class Title</h3>
+				<small>schedule date</small> -->
+				<div class="md-form input-group col-12" style="margin-top:-30px;">
+					<input type="text" class="form-control text-white text-center" id="demo" style="font-size:1.50em;font-weight:500" aria-describedby="material-addon2">
+					<div class="input-group-append">
+						<span class="input-group-text md-addon" id="material-addon2">
+						<i class="fas fa-pencil-alt text-white"></i></span>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 	</div>
-	<div id="scheduleDate" class="row" style="margin-left:0px;margin-right:0px;z-index:1">
-		<!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 animated flipInY" style="padding:0px;margin:0px;"> -->
-			<!-- <div class="card" style="box-shadow:none;margin:0px;border-radius:5px;background: #6a3093;  /* fallback for old browsers */ -->
-<!-- background: -webkit-linear-gradient(to right, #a044ff, #6a3093);  /* Chrome 10-25, Safari 5.1-6 */ -->
-<!-- background: linear-gradient(to right, #a044ff, #6a3093); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"> -->
-				<!-- <div class="body  bg-default" style="border-radius:5px;background: #6a3093;  /* fallback for old browsers */ -->
-<!-- background: -webkit-linear-gradient(to right, #a044ff, #6a3093);  /* Chrome 10-25, Safari 5.1-6 */ -->
-<!-- background: linear-gradient(to right, #a044ff, #6a3093); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ -->
+	<!-- container card -->
+	<div style="background:#fff;width:100%;position:absolute;min-height:100%;right:0px; left:0px;top:220px;border-radius: 0 18rem 0px 0px;">
+		<div style="width:90%;margin:0px auto;margin-top:-2%;z-index:3;" id="classScheduleData">
 
-<!-- "> -->
-					<!-- <span class="label-count bg-pink" style="margin-top:15px;margin-right:16px;">3</span> -->
-					<!-- <div class="text-center"> -->
-						<!-- <h4 class="text-white" style="margin:0px;">1</h4> -->
-						<!-- <small class="text-white">Day Name</small> -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 animated flipInY" style="padding:0px;margin:0px;"> -->
-			<!-- <div class="card" style="box-shadow:none;margin:0px;background:transparent;"> -->
-				<!-- <div class="body  bg-default" style="background:transparent;"> -->
-					<!-- <span class="label-count bg-pink" style="margin-top:15px;margin-right:16px;">3</span> -->
-					<!-- <div class="text-center"> -->
-						<!-- <h4 class="text-white" style="margin:0px;">7</h4> -->
-						<!-- <small class="text-white">Day Name</small> -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 animated flipInY" style="padding:0px;margin:0px;"> -->
-			<!-- <div class="card" style="box-shadow:none;margin:0px;background:transparent;"> -->
-				<!-- <div class="body  bg-default" style="background:transparent;"> -->
-					<!-- <span class="label-count bg-pink" style="margin-top:15px;margin-right:16px;">3</span> -->
-					<!-- <div class="text-center"> -->
-						<!-- <h4 class="text-white" style="margin:0px;">7</h4> -->
-						<!-- <small class="text-white">Day Name</small> -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 animated flipInY" style="padding:0px;margin:0px;"> -->
-			<!-- <div class="card" style="box-shadow:none;margin:0px;background:transparent;"> -->
-				<!-- <div class="body  bg-default" style="background:transparent;"> -->
-					<!-- <span class="label-count bg-pink" style="margin-top:15px;margin-right:16px;">3</span> -->
-					<!-- <div class="text-center"> -->
-						<!-- <h4 class="text-white" style="margin:0px;">7</h4> -->
-						<!-- <small class="text-white">Day Name</small> -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 animated flipInY" style="padding:0px;margin:0px;"> -->
-			<!-- <div class="card" style="box-shadow:none;margin:0px;background:transparent;"> -->
-				<!-- <div class="body  bg-default" style="background:transparent;"> -->
-					<!-- <span class="label-count bg-pink" style="margin-top:15px;margin-right:16px;">3</span> -->
-					<!-- <div class="text-center"> -->
-						<!-- <h4 class="text-white" style="margin:0px;">7</h4> -->
-						<!-- <small class="text-white">Day Name</small> -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 animated flipInY" style="padding:0px;margin:0px;"> -->
-			<!-- <div class="card" style="box-shadow:none;margin:0px;background:transparent;"> -->
-				<!-- <div class="body  bg-default" style="background:transparent;"> -->
-					<!-- <span class="label-count bg-pink" style="margin-top:15px;margin-right:16px;">3</span> -->
-					<!-- <div class="text-center"> -->
-						<!-- <h4 class="text-white" style="margin:0px;">7</h4> -->
-						<!-- <small class="text-white">Day Name</small> -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 animated flipInY" style="padding:0px;margin:0px;"> -->
-			<!-- <div class="card" style="box-shadow:none;margin:0px;background:transparent;"> -->
-				<!-- <div class="body  bg-default" style="background:transparent;"> -->
-					<!-- <span class="label-count bg-pink" style="margin-top:15px;margin-right:16px;">3</span> -->
-					<!-- <div class="text-center"> -->
-						<!-- <h4 class="text-white" style="margin:0px;">7</h4> -->
-						<!-- <small class="text-white">Day Name</small> -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 animated flipInY" style="padding:0px;margin:0px;"> -->
-			<!-- <div class="card" style="box-shadow:none;margin:0px;background:transparent;"> -->
-				<!-- <div class="body  bg-default" style="background:transparent;"> -->
-					<!-- <span class="label-count bg-pink" style="margin-top:15px;margin-right:16px;">3</span> -->
-					<!-- <div class="text-center"> -->
-						<!-- <h4 class="text-white" style="margin:0px;">7</h4> -->
-						<!-- <small class="text-white">Day Name</small> -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- </div> -->
-		<!-- </div> -->
-	</div>
+		</div>
+	</div>	
+	<div style="position:fixed;z-index:999;width:100%;bottom:0px;right:0px;left:0px;">
+		<ul class="nav nav-tabs nav-justified md-tabs indigo navRadiusNone" id="myTabJust" role="tablist">
+			<li class="nav-item waves-effect waves-light">
+				<a class="nav-link active" id="home-tab-just" data-toggle="tab" href="#home-just" role="tab" aria-controls="home-just" aria-selected="true"><i class="fas fa-calendar-alt"></i></a>
+			</li>
+			<li class="nav-item waves-effect waves-light">
+				<!-- <a class="nav-link" id="profile-tab-just" data-toggle="tab" href="#profile-just" role="tab" aria-controls="profile-just" aria-selected="false"><i class="fas fa-history"></i></a> -->
+				<a class="nav-link" href="classHistory.html"><i class="fas fa-history"></i></a>
+			</li>
+			<li class="nav-item waves-effect waves-light">
+				<a class="nav-link" href="bodyProgress.html"><i class="fas fa-chart-line"></i></a>
+			</li>
+		</ul>
+	</div>	
+	<!-- end container card -->
+	<!-- <div lcass="row" style="background:#fff;z-index:2;">
+		<div class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-sm-12">
+			<input class="form-control" id="demo1" type="text">
+		</div>
+	</div> -->
 </div>
-<section style="height:50px;z-index:11;background:#484684;position:fixed;left:0px;right:0px;bottom:0px;width:100%;margin:0px;padding-bottom:0px;">
-	<ul class="nav nav-justified text-center">
-		<li role="presentation" class="">
-			<i style="margin-top:15px;" data-uri="read" data-target="class" data-filter="classList" id="callAdmin" class="material-icons">phone</i>
-		</li>
-	</ul>
-</section>
+
+</body>
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/js/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datedropper/2.0/datedropper.min.js"></script>
+<script type="text/javascript" src="assets/js/script.js"></script>
+<script src="assets/js/onFunction.js"></script>
+<script>
+	// $( "#demo" ).dateDropper();
+	$(function() {
+		let d = new Date(),
+			month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear(),
+			today = year + "-" + month + "-" + day;
+		$('#demo').val(today);
+	})
+	$(document).on("click","#today", function(){
+		$("#demo" ).click();
+		$(".dd-c").css({"top":"165px"})
+	});
+	$( "#demo" ).dateDropper({
+			animate: true,
+			// bounce, dropDown
+			init_animation: "fadein",
+			format: "Y-m-d",
+			lang: "en",
+			// Set the initial value to current date or lock the control value to current date
+			// false(default), from, to.
+			lock: false,
+			minYear: 1970,
+			yearsRange: 10,
+			//CSS PRIOPRIETIES
+			dropPrimaryColor: "#6561bf",
+			dropTextColor: "#333333",
+			dropBackgroundColor: "#FFFFFF",
+			dropBorder: "1px solid #4760ca",
+			dropBorderRadius: 8,
+			dropShadow: "0 0 10px 0 rgb(145, 98, 173)",
+			dropWidth: 124,
+			dropTextWeight: 'bold'
+		});
+</script>
+
+</html>

@@ -1,7 +1,7 @@
 ﻿// const e = require("express");
 
-var urlService = 'http://149.129.241.18:8888/ronaldSengkey/fitClub/api/v1';
-// var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://149.129.241.18:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -23,7 +23,7 @@ $(function () {
 		select2Activated();
 	}
 	if ($('#classHistoryPage').length > 0) {
-		validate('memberClass');
+		validate('classHistory');
 	}
 	if ($('#classListPage').length > 0) {
 		validate('classList');
@@ -63,26 +63,27 @@ function logout() {
 
 function notification(cat, T) {
 	if (cat == 200) {
-		console.log('masuk cat 200');
-		swal({
-			title: "Proccess success!",
-			text: T,
-			icon: "success",
-			button: "Thanks!",
-		});
-		$(".sweet-alert").css({
-			'background-color': '#2196F3'
-		});
+		alert(T);
+		// swal({
+		// 	title: "Proccess success!",
+		// 	text: T,
+		// 	icon: "success",
+		// 	button: "Thanks!",
+		// });
+		// $(".sweet-alert").css({
+		// 	'background-color': '#2196F3'
+		// });
 	} else if (cat == 500) {
-		swal({
-			title: "Proccess failed!",
-			text: T,
-			icon: "error",
-			button: "Thanks!",
-		});
-		$(".sweet-alert").css({
-			'background-color': '#F44336'
-		});
+		alert(T);
+		// swal({
+		// 	title: "Proccess failed!",
+		// 	text: T,
+		// 	icon: "error",
+		// 	button: "Thanks!",
+		// });
+		// $(".sweet-alert").css({
+		// 	'background-color': '#F44336'
+		// });
 	}
 
 	$(".sweet-alert").find('p').css({
@@ -124,8 +125,8 @@ function validate(param) {
 			case "login":
 				window.location = "classHistory.html";
 				break;
-			case "memberClass":
-				getData("memberClass");
+			case "classHistory":
+				getData("classHistory");
 				break;
 			case 'classList':
 				getData('classList');
@@ -200,7 +201,7 @@ function getData(param, extraParam) {
 	let profile = JSON.parse(localStorage.getItem('dataProfile'));
 	let directory = urlService;
 	switch (param) {
-		case "memberClass":
+		case "classHistory":
 			//FIXME 
 			// directory += '/class/memberClass/' + profile.data.accessToken;
 			directory += '/class/memberClass/history' + profile.data.accessToken;
@@ -271,7 +272,7 @@ function getData(param, extraParam) {
 		tryCount: 0,
 		retryLimit: 3,
 		success: function (callback) {
-			console.log('kembalian', callback);
+			alert('kembalian', callback);
 			switch (callback.responseCode) {
 				case "500":
 					this.tryCount++;
@@ -286,7 +287,7 @@ function getData(param, extraParam) {
 					logout();
 					break;
 				case "404":
-					if (param == 'memberClass') {
+					if (param == 'classHistory') {
 						appendEmptyClass();
 					} else if (param == 'bodyProgress') {
 						appendEmptyChart();
@@ -300,7 +301,9 @@ function getData(param, extraParam) {
 				case "200":
 					if (param == 'classList') {
 						callback.data.forEach(appendClassData);
-					} else if (param == 'classDetail') {
+					} else if(param = 'classHistory'){
+						alert('masuk pak eko');
+					}else if (param == 'classDetail') {
 						domClassDetail(callback.data[0]);
 					} else if (param == 'classSchedule') {
 						callback.data.forEach(domClassSchedule);

@@ -1,7 +1,7 @@
 ﻿// const e = require("express");
 
-// var urlService = 'http://149.129.241.18:8888/ronaldSengkey/fitClub/api/v1';
-var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -201,9 +201,9 @@ function getData(param, extraParam) {
 	let directory = urlService;
 	switch (param) {
 		case "memberClass":
-			//FIXME 
-			directory += '/class/memberClass/' + profile.data.accessToken;
-			// directory += '/class/memberClass/history' + profile.data.accessToken;
+			console.log('masuk history class');
+			// directory += '/class/memberClass/' + profile.data.accessToken;
+			directory += '/class/memberClass/history' + profile.data.accessToken;
 			break;
 		case 'classList':
 			directory += '/class/' + profile.data.accessToken;
@@ -283,7 +283,7 @@ function getData(param, extraParam) {
 					}
 					break;
 				case "401":
-					logout();
+					// logout();
 					break;
 				case "404":
 					if (param == 'memberClass') {
@@ -312,7 +312,10 @@ function getData(param, extraParam) {
 						$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
 					} else if (param == 'availableClass') {
 						callback.data.forEach(appendClassAvailableData);
-					} 
+					} else if (param == 'memberClass') {
+						console.log('tes class',callback);
+						callback.data.forEach(domClassHistory);
+					}
 					break;
 			}
 		}
@@ -387,6 +390,30 @@ function domClassDetail(result) {
 	'</div>'+
 	'</div>';
 	$('#coachListDetail').append(coachHtml);
+}
+
+function domClassHistory(data,index){
+	let histHtml = '<div class="card card-cascade wider">' +
+		'<div class="card-body card-body-cascade text-center">' +
+		'<div class="row">' +
+		'<div class="col-8">' +
+		'<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="excerpt">' +
+		'<div class="brief">' +
+		'<h5 class="blue-text">' + data.className + '</h5></div>' +
+		'<div class="feed-footer">' +
+		'<div>' + data.coachName + '</div>' +
+		'<a class="like">' +
+		'</a></div></div></div></div>' +
+		'<div class="col-4">' +
+		'<h4 class="h4 text-default">' + data.startTime + '</h4>' +
+		'<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>' +
+		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
+		'<h4 class="h4 text-default">' + data.endTime + '</h4>' +
+		'</div>' +
+		'</div>' +
+		'</div></div><div class="clearfix"></div><br/>';
+	$('#classContent').append(histHtml);
 }
 
 function domClassSchedule(data, index) {
@@ -497,7 +524,7 @@ function postData(uri, target, dd) {
 			success: function (callback) {
 				switch (callback.responseCode) {
 					case "200":
-						notification(200, "Login success");
+						// notification(200, "Login success");
 						break;
 				}
 				loadingDeactive();

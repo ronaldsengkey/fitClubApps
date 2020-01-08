@@ -1,22 +1,79 @@
 ﻿$(function () {
-    if($('#line_chart').length > 0){
-        new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
-    }
-    if($('#bar_chart').length > 0){
-        new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('bar'));
-    }
-    if($('#radar_chart').length > 0){
-        new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
-    }
-    if($('#pie_chart').length > 0){
-        new Chart(document.getElementById("pie_chart").getContext("2d"), getChartJs('pie'));
-    }
-    if($('#doughnut_chart').length > 0){
-        new Chart(document.getElementById("doughnut_chart").getContext("2d"), getChartJs('doughnut'));
-    }
+    // if($('#line_chart').length > 0){
+    //     new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
+    // }
+    // if($('#bar_chart').length > 0){
+    //     new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('bar'));
+    // }
+    // if($('#radar_chart').length > 0){
+    //     new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
+    // }
+    // if($('#pie_chart').length > 0){
+    //     new Chart(document.getElementById("pie_chart").getContext("2d"), getChartJs('pie'));
+    // }
+    // if($('#doughnut_chart').length > 0){
+    //     new Chart(document.getElementById("doughnut_chart").getContext("2d"), getChartJs('doughnut'));
+    // }
 });
 
+var splitCategory = [];
+var splitCatValue = [];
+function defineChart(data){
+	data.forEach(domBodyProgressChart);
+    console.log('s',splitCategory);
+    console.log('sv',splitCatValue);
+    appendChart(splitCategory,splitCatValue);
+    
+}
+
+function appendChart(cat,value){
+    let htmlChart = '<canvas id="line_chart" class="animated flipInX mb-3" height="188"></canvas>';
+    $('.chartProg').append(htmlChart);
+    new Chart(document.getElementById("line_chart").getContext("2d"), domChartJs('line',cat,value));
+}
+
+function domBodyProgressChart(data,index){
+    splitCategory.push(data.categoryName);
+    splitCatValue.push(data.value);
+}
+
+function domChartJs(type,cat,value){
+    config = {
+        type: type,
+        data: {
+            labels: cat,
+            datasets: [{
+                label: "My First dataset",
+                data: value,
+                borderColor: 'rgba(0, 188, 212, 0.75)',
+                backgroundColor: 'rgba(0, 188, 212, 0.3)',
+                pointBorderColor: 'rgba(0, 188, 212, 0)',
+                pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
+                pointBorderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            legend: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: "white",
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "white",
+                    }
+                }]
+            }
+        }
+    }
+    return config;
+}
+
 function getChartJs(type) {
+    console.log('s',progressData);
     var config = null;
 
     if (type === 'line') {
@@ -32,7 +89,8 @@ function getChartJs(type) {
                     pointBorderColor: 'rgba(0, 188, 212, 0)',
                     pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
                     pointBorderWidth: 1
-                }, {
+                }, 
+                {
                         label: "My Second dataset",
                         data: [0, 111],
                         borderColor: 'rgba(233, 30, 99, 0.75)',
@@ -44,7 +102,19 @@ function getChartJs(type) {
             },
             options: {
                 responsive: true,
-                legend: false
+                legend: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontColor: "white",
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: "white",
+                        }
+                    }]
+                }
             }
         }
     } else if(type === 'doughnut'){

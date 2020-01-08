@@ -209,6 +209,10 @@ function parseUserData(){
 	return dataProfile;
 }
 
+$(document).on('change','#categoriesB', function(){
+	console.log('cat',$(this).val());
+});
+
 $(document).on('keyup','.search', function(){
 	var filter = $(this).val(), count = 0;
 	
@@ -268,8 +272,6 @@ $(document).on('click', '#submitOtp', function(){
 			  "Accept": "*/*",
 			  "Cache-Control": "no-cache",
 			  "Host": "localhost:8888",
-			  "Accept-Encoding": "gzip, deflate",
-			  "Connection": "keep-alive",
 	  },
 		data: JSON.stringify(dd),
 		success: function(callback){

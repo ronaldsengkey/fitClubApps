@@ -63,27 +63,27 @@ function logout() {
 
 function notification(cat, T) {
 	if (cat == 200) {
-		alert(T);
-		// swal({
-		// 	title: "Proccess success!",
-		// 	text: T,
-		// 	icon: "success",
-		// 	button: "Thanks!",
-		// });
-		// $(".sweet-alert").css({
-		// 	'background-color': '#2196F3'
-		// });
+		// alert(T);
+		swal({
+			title: "Proccess success!",
+			text: T,
+			icon: "success",
+			button: "Thanks!",
+		});
+		$(".sweet-alert").css({
+			'background-color': '#2196F3'
+		});
 	} else if (cat == 500) {
-		alert(T);
-		// swal({
-		// 	title: "Proccess failed!",
-		// 	text: T,
-		// 	icon: "error",
-		// 	button: "Thanks!",
-		// });
-		// $(".sweet-alert").css({
-		// 	'background-color': '#F44336'
-		// });
+		// alert(T);
+		swal({
+			title: "Proccess failed!",
+			text: T,
+			icon: "error",
+			button: "Thanks!",
+		});
+		$(".sweet-alert").css({
+			'background-color': '#F44336'
+		});
 	}
 
 	$(".sweet-alert").find('p').css({
@@ -194,7 +194,7 @@ function callModal(content) {
 	$('.modal-body').html(content);
 }
 
-
+var progressData = [];
 
 
 function getData(param, extraParam) {
@@ -204,7 +204,7 @@ function getData(param, extraParam) {
 		case "classHistory":
 			//FIXME 
 			// directory += '/class/memberClass/' + profile.data.accessToken;
-			directory += '/class/memberClass/history' + profile.data.accessToken;
+			directory += '/class/memberClass/history/' + profile.data.accessToken;
 			break;
 		case 'classList':
 			directory += '/class/' + profile.data.accessToken;
@@ -238,8 +238,6 @@ function getData(param, extraParam) {
 				"Content-Type": "application/json",
 				"Accept": "*/*",
 				"Cache-Control": "no-cache",
-				"Accept-Encoding": "gzip, deflate",
-				"Connection": "keep-alive",
 			},
 			timeout: 8000,
 			tryCount: 0,
@@ -265,14 +263,14 @@ function getData(param, extraParam) {
 			"Content-Type": "application/json",
 			"Accept": "*/*",
 			"Cache-Control": "no-cache",
-			"Accept-Encoding": "gzip, deflate",
-			"Connection": "keep-alive",
 		},
 		timeout: 8000,
 		tryCount: 0,
 		retryLimit: 3,
 		success: function (callback) {
-			alert('kembalian', callback);
+			console.log('kembalian', callback);
+			console.log('kembalian p', param);
+			console.log('kembalian d', directory);
 			switch (callback.responseCode) {
 				case "500":
 					this.tryCount++;
@@ -284,7 +282,7 @@ function getData(param, extraParam) {
 					}
 					break;
 				case "401":
-					// logout();
+					logout();
 					break;
 				case "404":
 					if (param == 'classHistory') {
@@ -299,25 +297,28 @@ function getData(param, extraParam) {
 					}
 					break;
 				case "200":
-					if (param == 'classList') {
-						callback.data.forEach(appendClassData);
-					} else if(param = 'classHistory'){
-						alert('masuk pak eko');
-					}else if (param == 'classDetail') {
-						domClassDetail(callback.data[0]);
-					} else if (param == 'classSchedule') {
-						callback.data.forEach(domClassSchedule);
-					} else if (param == 'bodyProgress') {
-						// callback.data.forEach(domBodyProgressChart);
-						defineChart(callback.data);
-						// console.log('i dont know what to do yet');
-						appendEmptyChart();
-						$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
-					} else if (param == 'availableClass') {
-						callback.data.forEach(appendClassAvailableData);
-					} else if (param == 'memberClass') {
-						console.log('tes class',callback);
-						callback.data.forEach(domClassHistory);
+					switch(param){
+						case "classSchedule":
+							callback.data.forEach(domClassSchedule);
+							break;
+						case "classList":
+							callback.data.forEach(appendClassData);
+							break;
+						case "classHistory":
+							callback.data.forEach(domClassHistory);
+							break;
+						case "classDetail":
+							domClassDetail(callback.data[0]);
+							break;
+						case "bodyProgress":
+							progressData = callback.data;
+							defineChart(callback.data);
+							// appendEmptyChart();
+							$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
+							break;
+						case "availableClass":
+							callback.data.forEach(appendClassAvailableData);
+							break;
 					}
 					break;
 			}
@@ -325,17 +326,6 @@ function getData(param, extraParam) {
 	})
 }
 
-var splitCategory = [];
-function defineChart(data){
-	data.forEach(domBodyProgressChart);
-
-	var uniqueNames = [];
-	$.each(splitCategory, function(i, el){
-		if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-	});
-	console.log('unique cat',uniqueNames);
-	// defineCategory(uniqueNames,data);
-}
 
 // function defineCategory(categoryData,data){
 	
@@ -346,13 +336,11 @@ function defineChart(data){
 // 	});
 // }
 
-function domBodyProgressChart(data,index){
-	splitCategory.push(data.categoryName);
-}
 
 function domPrCat(data,index){
 	let htmlPr = '<option value='+data.id+'>'+data.categoryName+'</option>';
 	$('#categories').append(htmlPr);
+	$('#categoriesB').append(htmlPr);
 }
 
 function appendEmptyChart() {
@@ -399,8 +387,8 @@ function domClassHistory(data,index){
 	let histHtml = '<div class="card card-cascade wider">' +
 		'<div class="card-body card-body-cascade text-center">' +
 		'<div class="row">' +
-		'<div class="col-8">' +
-		'<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="col-8" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="news">' +
 		'<div class="excerpt">' +
 		'<div class="brief">' +
 		'<h5 class="blue-text">' + data.className + '</h5></div>' +
@@ -409,10 +397,10 @@ function domClassHistory(data,index){
 		'<a class="like">' +
 		'</a></div></div></div></div>' +
 		'<div class="col-4">' +
-		'<h4 class="h4 text-default">' + data.startTime + '</h4>' +
+		'<h6 class="h6 text-default">' + data.startTime + '</h6>' +
 		'<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>' +
 		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
-		'<h4 class="h4 text-default">' + data.endTime + '</h4>' +
+		'<h6 class="h6 text-default">' + data.endTime + '</h6>' +
 		'</div>' +
 		'</div>' +
 		'</div></div><div class="clearfix"></div><br/>';
@@ -423,8 +411,8 @@ function domClassSchedule(data, index) {
 	let schedHtml = '<div class="card card-cascade wider">' +
 		'<div class="card-body card-body-cascade text-center">' +
 		'<div class="row">' +
-		'<div class="col-8">' +
-		'<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="col-8" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="news">' +
 		'<div class="excerpt">' +
 		'<div class="brief">' +
 		'<h5 class="blue-text">' + data.class_name + '</h5></div>' +
@@ -433,10 +421,10 @@ function domClassSchedule(data, index) {
 		'<a class="like">' +
 		'</a></div></div></div></div>' +
 		'<div class="col-4">' +
-		'<h4 class="h4 text-default">' + data.class_start_time + '</h4>' +
+		'<h6 class="h6 text-default">' + data.class_start_time + '</h6>' +
 		'<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.class_id + ')"><i class="fas fa-check"></i></a>' +
 		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
-		'<h4 class="h4 text-default">' + data.class_end_time + '</h4>' +
+		'<h6 class="h6 text-default">' + data.class_end_time + '</h6>' +
 		'</div>' +
 		'</div>' +
 		'</div></div><div class="clearfix"></div><br/>';
@@ -475,8 +463,8 @@ function appendClassAvailableData(data, index) {
 	'</div>';
 	let html = '<div class="card card-cascade wider classAvailableeList mb-3" onclick="toClassDetail(' + data.id + ')" data-id=' + data.id + ' data-class="' + data.name + '">' +
 		'<div class="card-body card-body-cascade text-center">' +
-		'<div class="row"><div class="col-8">' +
-		'<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="row"><div class="col-8" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="news">' +
 		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.name + '</h5></div>' +
 		'</div>' +
 		'</div>'
@@ -496,8 +484,8 @@ function appendClassData(data, index) {
 
 	let html = '<div class="card card-cascade wider classList mb-3" onclick="toClassDetail(' + data.id + ')" data-id=' + data.id + ' data-class="' + data.name + '">' +
 		'<div class="card-body card-body-cascade text-center">' +
-		'<div class="row"><div class="col-8">' +
-		'<div class="news" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="row"><div class="col-8" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="news">' +
 		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.name + '</h5></div>' +
 		'</div>' +
 		'</div>'

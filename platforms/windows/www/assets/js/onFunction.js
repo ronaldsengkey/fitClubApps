@@ -210,7 +210,9 @@ function parseUserData(){
 }
 
 $(document).on('change','#categoriesB', function(){
-	console.log('cat',$(this).val());
+	// console.log('cat',$(this).val());
+	var prcat = $(this).val();
+	getData('bodyProgressParam',prcat);
 });
 
 $(document).on('keyup','.search', function(){

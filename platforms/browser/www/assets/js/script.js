@@ -1,6 +1,6 @@
 ﻿// const e = require("express");
 
-var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://192.168.0.14:8888/ronaldSengkey/fitClub/api/v1';
 // var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
@@ -255,14 +255,53 @@ function getData(param, extraParam) {
 			}
 		})
 	}
+	if(param == 'bodyProgressParam'){
+		var cate = "";
+		if(extraParam == "0" || extraParam == 0){
+			cate = "all";
+		} else {
+			cate = JSON.stringify({"prCat":extraParam});
+		}
+		$.ajax({
+			url: urlService + '/member/personalRecord/'+profile.data.accessToken,
+			crossDomain: true,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"param" :cate
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian body progress param', callback);
+				switch (callback.responseCode) {
+					case "200":
+						defineChart(callback.data);
+						$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
+						break;
+					default:
+						notification(500,'empty data');
+						break;
+				}
+			}
+		})
+	}
 	$.ajax({
 		url: directory,
 		crossDomain: true,
 		method: "GET",
-		headers: {
+		headers: param != 'bodyProgress' ? {
 			"Content-Type": "application/json",
 			"Accept": "*/*",
 			"Cache-Control": "no-cache",
+		} : {
+			"Content-Type": "application/json",
+			"Accept": "*/*",
+			"Cache-Control": "no-cache",
+			"param" :"all"
 		},
 		timeout: 8000,
 		tryCount: 0,
@@ -467,11 +506,11 @@ function appendClassAvailableData(data, index) {
 		'<div class="news">' +
 		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.name + '</h5></div>' +
 		'</div>' +
-		'</div>'
+		'</div>'+
 	'</div>' +
 	'<div class="col-4">' +
-	'<h3 class="h3 text-default">07.00</h3>' +
-	'<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-target="classDetail" data-filter="classDetail" data-uri="read">Join</button>' +
+	'<h6 class="h6 text-default">'+data.coachname+'</h6>' +
+	// '<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-target="classDetail" data-filter="classDetail" data-uri="read">Join</button>' +
 	'</div>' +
 	'</div>' +
 	'</div>' +

@@ -76,11 +76,27 @@ $(document).on('change','#profilePicture',function(){
 })
 
 $(document).on('click','#manualTransfer',function(){
-	window.location.href="paymentManual.html";
+	window.location.href="paymentManualMethod.html";
+})
+
+$(document).on('click','#cashPayment',function(){
+	window.location.href="paymentCash.html";
 })
 
 $(document).on('click','#otherMethod',function(){
 	window.location.href="paymentGateway.html";
+})
+
+$(document).on('click','#bca',function(){
+	window.location.href="paymentManual.html";
+})
+
+$(document).on('click','#bri',function(){
+	window.location.href="paymentManual.html";
+})
+
+$(document).on('click','#mandiri',function(){
+	window.location.href="paymentManual.html";
 })
 
 $(document).on('click','button, a',function(){

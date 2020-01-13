@@ -1,6 +1,7 @@
 ﻿// const e = require("express");
 
-var urlService = 'http://192.168.0.14:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://192.168.0.14:8888/ronaldSengkey/fitClub/api/v1';
 // var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
@@ -45,6 +46,9 @@ $(function () {
 	}
 	if($('#classAvailableListPage').length > 0){
 		validate('availableClass');
+	}
+	if($('#paymentCashPage').length > 0){
+		validate('paymentCash');
 	}
 	var dataProfilee = parseUserData();
 	if (dataProfilee) {
@@ -143,6 +147,9 @@ function validate(param) {
 			case 'classSchedule':
 				getScheduleData();
 				break;
+			case 'paymentCash':
+				generatePayment();
+				break;
 			case 'bodyProgress':
 				getBodyProgress();
 				break;
@@ -181,6 +188,12 @@ function getBodyProgress() {
 
 function getScheduleData() {
 	getData('classSchedule');
+}
+
+function generatePayment(){
+	var qrcode = new QRCode("paymentBarcode");
+	qrcode.makeCode("halo");
+
 }
 
 function callModal(content) {
@@ -286,6 +299,9 @@ function getData(param, extraParam) {
 						notification(500,'empty data');
 						break;
 				}
+			},
+			error:function(callback){
+				notification(500,'empty data');
 			}
 		})
 	}

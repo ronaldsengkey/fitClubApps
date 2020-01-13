@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -39,7 +39,7 @@
 	<link href="assets/css/style.css" rel="stylesheet">
 </head>
 
-<body id="paymentManualPage" class="theme-blue bg-indigo" style="background:#484684 !important;">
+<body id="paymentCashPage" class="theme-blue bg-indigo" style="background:#484684 !important;">
 	<div style="margin:0px;padding:0px;position:fixed;background: #4568DC;
 background: -webkit-linear-gradient(to right, #B06AB3, #4568DC);
 background: linear-gradient(to right, #B06AB3, #4568DC);
@@ -50,9 +50,9 @@ width:100%;height:100%; opacity: 0.8;"></div>
 			<nav class="navbar navbar-dark navbar-2 purple-gradient col-12">
 
 				<!-- Navbar brand -->
-				<a class="navbar-brand" href="paymentManualMethod.html"><i class="fas fa-angle-left"></i></a>
+				<a class="navbar-brand" href="paymentMethod.html"><i class="fas fa-angle-left"></i></a>
 				<center>
-					<h5 class="text-white">Manual Payment</h5>
+					<h5 class="text-white">Cash Payment</h5>
 				</center>
 				<!-- Collapse button -->
 				<button class="navbar-toggler collapsed col-2" type="button" data-toggle="collapse"
@@ -93,38 +93,18 @@ width:100%;height:100%; opacity: 0.8;"></div>
 		<div style="width:90%;margin:0px auto;">
 			<div class="row" style="margin-left:0px;margin-right:0px;z-index:1;">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-justify">
-					<div class="text-center"><img src="assets/images/Transfer.png" style="width:67%;"></div>
-					<h4 class="text-center h3 text-white mb-2 text-uppercase" id="classLevel">Gold</h4>
+					<div class="text-center"><img src="assets/images/Payment.png" style="width:67%;"></div>
 					<div class="clearfix"></div><br>
-					<h4 class="text-white text-center">Membership cost :</h4>
-					<h3 id="priceLevel" class="text-white text-center">Rp 125.000</h3>
+					<h3 class="text-center h3 text-white">Payment Cash</h3>
 					<div class="clearfix"></div><br>
-					<h4 class="text-white text-center">Payment Via :</h4>
-					<h5 id="rekNumber" class="text-white text-center">BCA a/n wawa</h5>
-					<h5 id="rekNumber" class="text-white text-center">no rek : 1238194221</h5>
-					<form class="md-form">
-						<div class="file-field">
-							<div class="d-flex justify-content-center">
-							<div class="btn btn-mdb-color btn-rounded float-left">
-								<span>Add Transfer Prove</span>
-								<input type="file">
-							</div>
-							</div>
-						</div>
-					</form>
+					<h5 class="text-white text-center">Please show this qr code to nearby coach</h5>
 				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div><br>
-		<div class="row">
-				<div class="col-12 col-lg-12">			
-					<div class="d-flex flex-column" style="position:fixed;bottom:0px;right:0px;left:0px;width:100%;">
-						<button class="btn btn-block btn-indigo waves-effect waves-light">
-								Upload Transfer File
-						</button>
-					</div>
-				</div>
-			</div>
+		<div class="text-center" id="paymentBarcode">
+			
+		</div>
 		<!-- JQuery -->
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 		<!-- Bootstrap tooltips -->
@@ -142,6 +122,7 @@ width:100%;height:100%; opacity: 0.8;"></div>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<script type="text/javascript" src="assets/js/script.js"></script>
 		<script src="assets/js/onFunction.js"></script>
+		<script type="text/javascript" src="assets/js/qrcode.min.js"></script>
 </body>
 
 </html>

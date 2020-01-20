@@ -76,7 +76,8 @@ $(document).on('change','#profilePicture',function(){
 })
 
 $(document).on('click','#manualTransfer',function(){
-	window.location.href="paymentManualMethod.html";
+	var cat_id = $('#cat_id').val();
+	window.location.href="paymentManualMethod.html?cat="+cat_id;
 })
 
 $(document).on('click','#cashPayment',function(){
@@ -88,15 +89,21 @@ $(document).on('click','#otherMethod',function(){
 })
 
 $(document).on('click','#bca',function(){
-	window.location.href="paymentManual.html";
+	var cat_id = $('#cat_id_bank').val();
+	var bank_name = $(this).attr('id');
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name;
 })
 
 $(document).on('click','#bri',function(){
-	window.location.href="paymentManual.html";
+	var cat_id = $('#cat_id_bank').val();
+	var bank_name = $(this).attr('id');
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name;
 })
 
 $(document).on('click','#mandiri',function(){
-	window.location.href="paymentManual.html";
+	var cat_id = $('#cat_id_bank').val();
+	var bank_name = $(this).attr('id');
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name;
 })
 
 $(document).on('click','button, a',function(){
@@ -124,7 +131,7 @@ $(document).on('click','button, a',function(){
 				'specialization':specialization};
 			} else if(filter == 'joinMember' && target == 'joinMember'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
-				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val()};
+				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text()};
 			} else if(filter == 'personalBodyProgress' && target == 'bodyProgress'){
 				data = {'prCat' : $('select#categories').val(), 'dataValue':$('#progressValue').val()};
 			}

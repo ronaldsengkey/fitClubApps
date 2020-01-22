@@ -77,7 +77,8 @@ $(document).on('change','#profilePicture',function(){
 
 $(document).on('click','#manualTransfer',function(){
 	var cat_id = $('#cat_id').val();
-	window.location.href="paymentManualMethod.html?cat="+cat_id;
+	var cat_name = $('#cat_name').val();
+	window.location.href="paymentManualMethod.html?cat="+cat_id+"&cat_name="+cat_name;
 })
 
 $(document).on('click','#cashPayment',function(){
@@ -90,20 +91,23 @@ $(document).on('click','#otherMethod',function(){
 
 $(document).on('click','#bca',function(){
 	var cat_id = $('#cat_id_bank').val();
+	var cat_name = $('#cat_name_member').val();
 	var bank_name = $(this).attr('id');
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name;
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name;
 })
 
 $(document).on('click','#bri',function(){
 	var cat_id = $('#cat_id_bank').val();
 	var bank_name = $(this).attr('id');
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name;
+	var cat_name = $('#cat_name_member').val();
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name;
 })
 
 $(document).on('click','#mandiri',function(){
 	var cat_id = $('#cat_id_bank').val();
+	var cat_name = $('#cat_name_member').val();
 	var bank_name = $(this).attr('id');
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name;
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name;
 })
 
 $(document).on('click','button, a',function(){

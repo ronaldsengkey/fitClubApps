@@ -146,6 +146,7 @@ function validate(param) {
 				break;
 			case 'profile':
 				appendProfile(dataProfile)
+				generateQrProfile();
 				break;
 			case 'membership':
 				appendMembershipData(dataProfile);
@@ -170,6 +171,7 @@ function validate(param) {
 				break;
 			case "paymentManual":
 				getPaymentData();
+				generateTimer();
 				break;
 				// default:
 				// 	window.location = "classHistory.html";
@@ -200,13 +202,64 @@ function validate(param) {
 	}
 }
 
+function generateTimer() {
+	var halfHour = 60 * 1;
+	var display = $('#time');
+	startTimer(halfHour, display);
+}
+
+function startTimer(duration, display){
+	var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.text(minutes + ":" + seconds);
+
+        if (--timer < 0) {
+			timer = duration;
+			expiredTimer();
+        }
+    }, 1000);
+}
+
+function expiredTimer(){
+	alert('waktu habis');
+}
+
+function encodeImageFileAsURL(){
+	var filesSelected = document.getElementById("inputFileToLoad").files;
+	if (filesSelected.length > 0) {
+		var fileToLoad = filesSelected[0];
+		var fileReader = new FileReader();
+		fileReader.onload = function(fileLoadedEvent) {
+			var srcData = fileLoadedEvent.target.result;
+			var newImage = document.createElement('img');
+			newImage.src = srcData;
+			newImage.style.cssText = "max-width:75vw;";
+			document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+			$('#payProve64').val(srcData)
+		}
+		fileReader.readAsDataURL(fileToLoad);
+	}
+}
+
+function generateQrProfile(){
+	var qrcode = new QRCode("qrProfile", {
+		width: 128,
+		height: 128,
+	});
+	qrcode.makeCode("halo");
+}
+
 function getPaymentData(){
 	let searchParams = new URLSearchParams(window.location.search);
-	let param = searchParams.get('cat');
 	let param_bank = searchParams.get('bank');
-	console.log('payment',param);
-	console.log('payment bank',param_bank);
-	$('#classLevel').html(param);
+	let cat_name_on_bank = searchParams.get('cat_name');
+	$('#classLevel').html(cat_name_on_bank);
 	getBankParam(param_bank);
 }
 
@@ -221,13 +274,17 @@ function getBankParam(bank_name){
 function getCategoryData(){
 	let searchParams = new URLSearchParams(window.location.search);
 	let param = searchParams.get('cat');
+	let paramCatName = searchParams.get('cat_name');
 	$('#cat_id').val(param);
+	$('#cat_name').val(paramCatName);
 }
 
 function getBankList(){
 	let searchParams = new URLSearchParams(window.location.search);
 	let param = searchParams.get('cat');
+	let paramCatNameOnBank = searchParams.get('cat_name');
 	$('#cat_id_bank').val(param);
+	$('#cat_name_member').val(paramCatNameOnBank);
 	getData('getBankList');
 }
 
@@ -236,7 +293,10 @@ function getScheduleData() {
 }
 
 function generatePayment(){
-	var qrcode = new QRCode("paymentBarcode");
+	var qrcode = new QRCode("paymentBarcode", {
+		width: 200,
+		height: 200,
+	});
 	qrcode.makeCode("halo");
 
 }
@@ -290,12 +350,6 @@ function getData(param, extraParam) {
 		case "availableClass":
 			directory += '/class/memberClass/' + profile.data.accessToken;
 			break;
-		case "getBankList":
-			directory += '/bank/' + profile.data.accessToken;
-			break;
-		case "bankParam":
-			directory += '/bank/' + extraParam;
-			break;
 	}
 	if(param == 'bodyProgress'){
 		$.ajax({
@@ -320,6 +374,64 @@ function getData(param, extraParam) {
 						notification(500,'empty data');
 						break;
 				}
+			}
+		})
+	} else if(param == 'bankParam'){
+		$.ajax({
+			url: urlService + '/bank/' + profile.data.accessToken,
+			crossDomain: true,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"param" :extraParam
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian bank list param', callback);
+				switch (callback.responseCode) {
+					case "200":
+						callback.data.forEach(appendDetailBank);
+						break;
+					default:
+						notification(500,'empty data');
+						break;
+				}
+			},
+			error:function(callback){
+				notification(500,'empty data');
+			}
+		})
+	} else if(param == 'getBankList'){
+		$.ajax({
+			url: urlService + '/bank/' + profile.data.accessToken,
+			crossDomain: true,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"param" :"all"
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian bank list all', callback);
+				switch (callback.responseCode) {
+					case "200":
+						callback.data.forEach(appendBankList);
+						break;
+					default:
+						notification(500,'empty data');
+						break;
+				}
+			},
+			error:function(callback){
+				notification(500,'empty data');
 			}
 		})
 	} else if(param == 'bodyProgressParam'){
@@ -359,87 +471,87 @@ function getData(param, extraParam) {
 				notification(500,'empty data');
 			}
 		})
-	} else {
-		$.ajax({
-			url: directory,
-			crossDomain: true,
-			method: "GET",
-			headers: param != 'bodyProgress' ? {
-				"Content-Type": "application/json",
-				"Accept": "*/*",
-				"Cache-Control": "no-cache",
-			} : {
-				"Content-Type": "application/json",
-				"Accept": "*/*",
-				"Cache-Control": "no-cache",
-				"param" :"all"
-			},
-			timeout: 8000,
-			tryCount: 0,
-			retryLimit: 3,
-			success: function (callback) {
-				console.log('kembalian', callback);
-				console.log('kembalian p', param);
-				console.log('kembalian d', directory);
-				switch (callback.responseCode) {
-					case "500":
-						this.tryCount++;
-						if (this.tryCount < this.retryLimit) {
-							$.ajax(this);
-						} else if (this.tryCount == this.retryLimit) {
-							let empty500 = '<h3 class="h3 mb-5">Server Error</h3>'
-							$('#classContent').append(empty500);
-						}
-						break;
-					case "401":
-						logout();
-						break;
-					case "404":
-						if (param == 'classHistory') {
-							appendEmptyClass();
-						} else if (param == 'bodyProgress') {
-							appendEmptyChart();
-							$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
-						} else if (param == 'availableClass') {
-							appendEmptyAvailableClass();
-						} else {
-							alert(callback.responseMessage);
-						}
-						break;
-					case "200":
-						switch(param){
-							case "classSchedule":
-								callback.data.forEach(domClassSchedule);
-								break;
-							case "classList":
-								callback.data.forEach(appendClassData);
-								break;
-							case "classHistory":
-								callback.data.forEach(domClassHistory);
-								break;
-							case "classDetail":
-								domClassDetail(callback.data[0]);
-								break;
-							case "bodyProgress":
-								progressData = callback.data;
-								defineChart(callback.data);
-								$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
-								break;
-							case "availableClass":
-								callback.data.forEach(appendClassAvailableData);
-								break;
-							case "getBankList":
-								callback.data.forEach(appendBankList);
-								break;
-							case "bankParam":
-								console.log('kembalian bank param',callback.data);
-								break;
-						}
-						break;
-				}
-			}
-		})
 	}
+	$.ajax({
+		url: directory,
+		crossDomain: true,
+		method: "GET",
+		headers: param != 'bodyProgress' ? {
+			"Content-Type": "application/json",
+			"Accept": "*/*",
+			"Cache-Control": "no-cache",
+		} : {
+			"Content-Type": "application/json",
+			"Accept": "*/*",
+			"Cache-Control": "no-cache",
+			"param" :"all"
+		},
+		timeout: 8000,
+		tryCount: 0,
+		retryLimit: 3,
+		success: function (callback) {
+			console.log('kembalian', callback);
+			console.log('kembalian p', param);
+			console.log('kembalian d', directory);
+			switch (callback.responseCode) {
+				case "500":
+					this.tryCount++;
+					if (this.tryCount < this.retryLimit) {
+						$.ajax(this);
+					} else if (this.tryCount == this.retryLimit) {
+						let empty500 = '<h3 class="h3 mb-5">Server Error</h3>'
+						$('#classContent').append(empty500);
+					}
+					break;
+				case "401":
+					logout();
+					break;
+				case "404":
+					if (param == 'classHistory') {
+						appendEmptyClass();
+					} else if (param == 'bodyProgress') {
+						appendEmptyChart();
+						$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
+					} else if (param == 'availableClass') {
+						appendEmptyAvailableClass();
+					} else {
+						alert(callback.responseMessage);
+					}
+					break;
+				case "200":
+					switch(param){
+						case "classSchedule":
+							callback.data.forEach(domClassSchedule);
+							break;
+						case "classList":
+							callback.data.forEach(appendClassData);
+							break;
+						case "classHistory":
+							callback.data.forEach(domClassHistory);
+							break;
+						case "classDetail":
+							domClassDetail(callback.data[0]);
+							break;
+						case "bodyProgress":
+							progressData = callback.data;
+							console.log('callback bp',callback.data);
+							defineChart(callback.data);
+							$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
+							break;
+						case "availableClass":
+							callback.data.forEach(appendClassAvailableData);
+							break;
+						case "getBankList":
+							callback.data.forEach(appendBankList);
+							break;
+						case "bankParam":
+							console.log('kembalian bank param',callback.data);
+							break;
+					}
+					break;
+			}
+		}
+	})
 }
 
 
@@ -451,6 +563,11 @@ function getData(param, extraParam) {
 // 		}
 // 	});
 // }
+
+function appendDetailBank(data,index){
+	$('.bankName').html(data.name + " a/n " + data.billName);
+	$('.bankNumber').html("No rek : " + data.billNumber);
+}
 
 function appendBankList(data,index){
 	let bankHtml = '<div class="row mb-5" style="margin:0px;">'+
@@ -512,6 +629,9 @@ function domClassDetail(result) {
 	$('#coachListDetail').append(coachHtml);
 }
 
+// '<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>' +
+// 		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
+
 function domClassHistory(data,index){
 	let histHtml = '<div class="card card-cascade wider">' +
 		'<div class="card-body card-body-cascade text-center">' +
@@ -527,8 +647,7 @@ function domClassHistory(data,index){
 		'</a></div></div></div></div>' +
 		'<div class="col-4">' +
 		'<h6 class="h6 text-default">' + data.startTime + '</h6>' +
-		'<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>' +
-		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
+		'<h3> - </h3>'+
 		'<h6 class="h6 text-default">' + data.endTime + '</h6>' +
 		'</div>' +
 		'</div>' +
@@ -674,6 +793,7 @@ function postData(uri, target, dd) {
 		});
 	} else if (target == 'joinMember') {
 		var cat_name = dd.memberCatName;
+		// alert(cat_name);
 		delete dd.memberCatName;
 		$.ajax({
 			url: urlService + '/member/join',
@@ -688,7 +808,7 @@ function postData(uri, target, dd) {
 				switch (callback.responseCode) {
 					case "200":
 						notification(200, "Success join membership");
-						window.location.href = "paymentMethod.html?cat=" + dd.memberCat;
+						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name;
 						break;
 					default:
 						alert('msih failed',callback);

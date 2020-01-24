@@ -143,7 +143,7 @@ $(document).on('click','button, a',function(){
 				'specialization':specialization};
 			} else if(filter == 'joinMember' && target == 'joinMember'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
-				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val()};
+				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id')};
 			} else if(filter == 'personalBodyProgress' && target == 'bodyProgress'){
 				data = {'prCat' : $('select#categories').val(), 'dataValue':$('#progressValue').val()};
 			}

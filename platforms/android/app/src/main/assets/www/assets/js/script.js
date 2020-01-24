@@ -1,7 +1,7 @@
 ﻿// const e = require("express");
 
 // var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
-var urlService = 'http://192.168.0.5:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://192.168.0.44:8888/ronaldSengkey/fitClub/api/v1';
 // var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
@@ -251,21 +251,23 @@ function getPaymentData(){
 	let param_bank = searchParams.get('bank');
 	let cat_name_on_bank = searchParams.get('cat_name');
 	let placesId = searchParams.get('placeIdPay');
+	let catId = searchParams.get('cat');
 	let cat_manual_price = searchParams.get('cat_price');
 	$('#classLevel').html(cat_name_on_bank);
 	getBankParam(param_bank);
-	getPaymentValue(placesId,cat_name_on_bank,cat_manual_price);
+	getPaymentValue(placesId,catId,cat_manual_price);
 }
 
 function getBodyProgress() {
 	getData('bodyProgress');
 }
 
-function getPaymentValue(placeId,cat_name,cat_price){
-	// getData('')
-	console.log('p id',placeId);
-	console.log('cat name',cat_name);
-	console.log('cat price',cat_price);
+function getPaymentValue(placeId,cat_id){
+	var payObj = {
+		"memberCategory":cat_id,
+		"placeId":placeId
+	}
+	getData('generatePayment',payObj);
 }
 
 function getBankParam(bank_name){
@@ -278,7 +280,8 @@ function getCategoryData(){
 	let paramCatName = searchParams.get('cat_name');
 	let placeId = searchParams.get('placeId');
 	let paramCatPrice = searchParams.get('cat_price');
-	$('#cat_id').val(param);
+	let paramCatId = searchParams.get('cat_id');
+	$('#cat_id').val(paramCatId);
 	$('#cat_name').val(paramCatName);
 	$('#placeId').val(placeId);
 	$('#cat_price').val(paramCatPrice);
@@ -290,6 +293,7 @@ function getBankList(){
 	let paramCatNameOnBank = searchParams.get('cat_name');
 	let paramPlaceId = searchParams.get('placeId');
 	let paramCatPrice = searchParams.get('cat_price');
+	console.log('param',param);
 	$('#cat_id_bank').val(param);
 	$('#cat_name_member').val(paramCatNameOnBank);
 	$('#placeIdManual').val(paramPlaceId);
@@ -327,13 +331,19 @@ function emptyChart(){
 	$('canvas[id=line_chart]').remove();
 }
 
+function convertToRupiah(angka)
+{
+	var rupiah = '';		
+	var angkarev = angka.toString().split('').reverse().join('');
+	for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+	return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+}
 
 function getData(param, extraParam) {
 	let profile = JSON.parse(localStorage.getItem('dataProfile'));
 	let directory = urlService;
 	switch (param) {
 		case "classHistory":
-			//FIXME 
 			// directory += '/class/memberClass/' + profile.data.accessToken;
 			directory += '/class/memberClass/history/' + profile.data.accessToken;
 			break;
@@ -364,6 +374,10 @@ function getData(param, extraParam) {
 			break;
 		case 'paymentFee':
 			directory += '/member/fee/' + profile.data.accessToken;
+			break;
+		case 'generatePayment':
+			console.log('ww',extraParam);
+			directory += '/transaction/request/' + JSON.stringify(extraParam) + '/' + profile.data.accessToken;
 			break;
 	}
 	if(param == 'bodyProgress'){
@@ -442,6 +456,38 @@ function getData(param, extraParam) {
 						break;
 					default:
 						notification(500,'empty data');
+						break;
+				}
+			},
+			error:function(callback){
+				notification(500,'empty data');
+			}
+		})
+	} else if(param == 'generatePayment'){
+		$.ajax({
+			url: directory,
+			crossDomain: true,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"param" :"all"
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian generate payment', callback);
+				switch (callback.responseCode) {
+					case "200":
+						// console.log('data',callback);
+						var priceConvert = convertToRupiah(callback.data.price)
+						$('.priceGenerate').html(priceConvert);
+						break;
+					default:
+						// notification(500,'empty data');
+						console.log('error',callback);
 						break;
 				}
 			},
@@ -568,6 +614,9 @@ function getData(param, extraParam) {
 						case "paymentFee":
 							callback.data.forEach(appendPaymentFee);
 							break;
+						case 'generatePayment':
+							console.log('payment',callback);
+							break;
 					}
 					break;
 			}
@@ -575,18 +624,8 @@ function getData(param, extraParam) {
 	})
 }
 
-
-// function defineCategory(categoryData,data){
-	
-// 	data.forEach(element => {
-// 		if(categoryData.includes(element.categoryName)){
-
-// 		}
-// 	});
-// }
-
 function appendPaymentFee(data,index){
-	let paymentHtml = '<option value='+data.fee+'>'+data.category+'</option>'
+	let paymentHtml = '<option value='+data.fee+' data-id='+data.catId+'>'+data.category+'</option>'
 	$('#memberSelect').append(paymentHtml);
 }
 
@@ -821,9 +860,11 @@ function postData(uri, target, dd) {
 		var cat_name = dd.memberCatName;
 		var place_id = dd.placeId;
 		var cat_price = dd.memberPrice;
+		var cat_id = dd.catID;
 		delete dd.memberCatName;
 		delete dd.placeId;
-		delete cat_price;
+		delete dd.memberPrice;
+		delete dd.catID;
 		$.ajax({
 			url: urlService + '/member/join',
 			type: "POST",
@@ -837,7 +878,7 @@ function postData(uri, target, dd) {
 				switch (callback.responseCode) {
 					case "200":
 						notification(200, "Success join membership");
-						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price;
+						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price + "&cat_id=" + cat_id;
 						break;
 					default:
 						alert('msih failed',callback);

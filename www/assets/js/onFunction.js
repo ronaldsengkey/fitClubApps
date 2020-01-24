@@ -78,7 +78,9 @@ $(document).on('change','#profilePicture',function(){
 $(document).on('click','#manualTransfer',function(){
 	var cat_id = $('#cat_id').val();
 	var cat_name = $('#cat_name').val();
-	window.location.href="paymentManualMethod.html?cat="+cat_id+"&cat_name="+cat_name;
+	var placeId = $('#placeId').val();
+	var cat_price = $('#cat_price').val();
+	window.location.href="paymentManualMethod.html?cat="+cat_id+"&cat_name="+cat_name+"&placeId="+placeId+"&cat_price="+cat_price;
 })
 
 $(document).on('click','#cashPayment',function(){
@@ -92,22 +94,28 @@ $(document).on('click','#otherMethod',function(){
 $(document).on('click','#bca',function(){
 	var cat_id = $('#cat_id_bank').val();
 	var cat_name = $('#cat_name_member').val();
+	var placeGymId = $('#placeIdManual').val();
+	var cat_price = $('#cat_manual_price').val();
 	var bank_name = $(this).attr('id');
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name;
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price;
 })
 
 $(document).on('click','#bri',function(){
 	var cat_id = $('#cat_id_bank').val();
 	var bank_name = $(this).attr('id');
+	var placeGymId = $('#placeIdManual').val();
 	var cat_name = $('#cat_name_member').val();
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name;
+	var cat_price = $('#cat_manual_price').val();
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price;
 })
 
 $(document).on('click','#mandiri',function(){
 	var cat_id = $('#cat_id_bank').val();
 	var cat_name = $('#cat_name_member').val();
 	var bank_name = $(this).attr('id');
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name;
+	var placeGymId = $('#placeIdManual').val();
+	var cat_price = $('#cat_manual_price').val();
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price;
 })
 
 $(document).on('click','button, a',function(){
@@ -135,7 +143,7 @@ $(document).on('click','button, a',function(){
 				'specialization':specialization};
 			} else if(filter == 'joinMember' && target == 'joinMember'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
-				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text()};
+				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val()};
 			} else if(filter == 'personalBodyProgress' && target == 'bodyProgress'){
 				data = {'prCat' : $('select#categories').val(), 'dataValue':$('#progressValue').val()};
 			}
@@ -237,9 +245,13 @@ function parseUserData(){
 }
 
 $(document).on('change','#categoriesB', function(){
-	// console.log('cat',$(this).val());
 	var prcat = $(this).val();
 	getData('bodyProgressParam',prcat);
+});
+
+$(document).on('click','.uploadFile', function(){
+	var imgFile = $('#payProve64').val();
+	
 });
 
 $(document).on('keyup','.search', function(){

@@ -150,6 +150,8 @@ function validate(param) {
 				break;
 			case 'membership':
 				appendMembershipData(dataProfile);
+				getData('placeMember');
+				getData('paymentFee');
 				break;
 			case 'classDetail':
 				getDetailData();
@@ -177,22 +179,6 @@ function validate(param) {
 				// 	window.location = "classHistory.html";
 				// 	break;
 		}
-		// if($('#profilePage').length > 0 ){
-		// $('#userName').html(userName);
-		// $('#name').val(userName);
-		// $('.wrapImg').attr('data-id',userId);
-		// $('#updateProfile').attr('data-id',userId);
-		// $('#bodyProgress').attr('data-id',userId);
-		// $('#uploadImgProfile').val(userId);
-		// var param = {'token':12345678,'filter':'getProfile','dataId':userId};
-		// postData('read','user',param);
-		// }if($('#classHistoryPage').length > 0){
-		// 	$('#userName').html(dataProfile.name);
-		// 	$('#name').val(dataProfile.name);
-		// 	var param = {'dataId':dataProfile.memberId};
-		// postData('read','classHistory',param);
-		// }
-		// else{ getPage("",'profile',''); }
 	} else {
 		// window.location = "index.html";
 		// logout();
@@ -202,8 +188,13 @@ function validate(param) {
 	}
 }
 
+function appendPlace(data,index){
+	let placeHtml = '<option value='+data.partnerId+'>'+data.name+'</option>';
+	$('#placeGym').append(placeHtml);
+}
+
 function generateTimer() {
-	var halfHour = 60 * 1;
+	var halfHour = 60 * 30;
 	var display = $('#time');
 	startTimer(halfHour, display);
 }
@@ -227,7 +218,7 @@ function startTimer(duration, display){
 }
 
 function expiredTimer(){
-	alert('waktu habis');
+	window.location.href="paymentMethod.html";
 }
 
 function encodeImageFileAsURL(){
@@ -259,12 +250,22 @@ function getPaymentData(){
 	let searchParams = new URLSearchParams(window.location.search);
 	let param_bank = searchParams.get('bank');
 	let cat_name_on_bank = searchParams.get('cat_name');
+	let placesId = searchParams.get('placeIdPay');
+	let cat_manual_price = searchParams.get('cat_price');
 	$('#classLevel').html(cat_name_on_bank);
 	getBankParam(param_bank);
+	getPaymentValue(placesId,cat_name_on_bank,cat_manual_price);
 }
 
 function getBodyProgress() {
 	getData('bodyProgress');
+}
+
+function getPaymentValue(placeId,cat_name,cat_price){
+	// getData('')
+	console.log('p id',placeId);
+	console.log('cat name',cat_name);
+	console.log('cat price',cat_price);
 }
 
 function getBankParam(bank_name){
@@ -275,16 +276,24 @@ function getCategoryData(){
 	let searchParams = new URLSearchParams(window.location.search);
 	let param = searchParams.get('cat');
 	let paramCatName = searchParams.get('cat_name');
+	let placeId = searchParams.get('placeId');
+	let paramCatPrice = searchParams.get('cat_price');
 	$('#cat_id').val(param);
 	$('#cat_name').val(paramCatName);
+	$('#placeId').val(placeId);
+	$('#cat_price').val(paramCatPrice);
 }
 
 function getBankList(){
 	let searchParams = new URLSearchParams(window.location.search);
 	let param = searchParams.get('cat');
 	let paramCatNameOnBank = searchParams.get('cat_name');
+	let paramPlaceId = searchParams.get('placeId');
+	let paramCatPrice = searchParams.get('cat_price');
 	$('#cat_id_bank').val(param);
 	$('#cat_name_member').val(paramCatNameOnBank);
+	$('#placeIdManual').val(paramPlaceId);
+	$('#cat_manual_price').val(paramCatPrice);
 	getData('getBankList');
 }
 
@@ -349,6 +358,12 @@ function getData(param, extraParam) {
 			break;
 		case "availableClass":
 			directory += '/class/memberClass/' + profile.data.accessToken;
+			break;
+		case "placeMember":
+			directory += '/place/' + profile.data.accessToken;
+			break;
+		case 'paymentFee':
+			directory += '/member/fee/' + profile.data.accessToken;
 			break;
 	}
 	if(param == 'bodyProgress'){
@@ -544,8 +559,14 @@ function getData(param, extraParam) {
 						case "getBankList":
 							callback.data.forEach(appendBankList);
 							break;
+						case "placeMember":
+							callback.data.forEach(appendPlace);
+							break;
 						case "bankParam":
 							console.log('kembalian bank param',callback.data);
+							break;
+						case "paymentFee":
+							callback.data.forEach(appendPaymentFee);
 							break;
 					}
 					break;
@@ -563,6 +584,11 @@ function getData(param, extraParam) {
 // 		}
 // 	});
 // }
+
+function appendPaymentFee(data,index){
+	let paymentHtml = '<option value='+data.fee+'>'+data.category+'</option>'
+	$('#memberSelect').append(paymentHtml);
+}
 
 function appendDetailBank(data,index){
 	$('.bankName').html(data.name + " a/n " + data.billName);
@@ -793,8 +819,11 @@ function postData(uri, target, dd) {
 		});
 	} else if (target == 'joinMember') {
 		var cat_name = dd.memberCatName;
-		// alert(cat_name);
+		var place_id = dd.placeId;
+		var cat_price = dd.memberPrice;
 		delete dd.memberCatName;
+		delete dd.placeId;
+		delete cat_price;
 		$.ajax({
 			url: urlService + '/member/join',
 			type: "POST",
@@ -808,7 +837,7 @@ function postData(uri, target, dd) {
 				switch (callback.responseCode) {
 					case "200":
 						notification(200, "Success join membership");
-						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name;
+						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price;
 						break;
 					default:
 						alert('msih failed',callback);

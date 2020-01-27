@@ -160,7 +160,8 @@ function validate(param) {
 				getScheduleData();
 				break;
 			case 'paymentCash':
-				generatePayment();
+				generateCashPayment();
+				// getData('paymentCash');
 				break;
 			case 'bodyProgress':
 				getBodyProgress();
@@ -265,7 +266,8 @@ function getBodyProgress() {
 function getPaymentValue(placeId,cat_id){
 	var payObj = {
 		"memberCategory":cat_id,
-		"placeId":placeId
+		"placeId":placeId,
+		"paymentType":"transfer"
 	}
 	getData('generatePayment',payObj);
 }
@@ -305,13 +307,16 @@ function getScheduleData() {
 	getData('classSchedule');
 }
 
-function generatePayment(){
-	var qrcode = new QRCode("paymentBarcode", {
-		width: 200,
-		height: 200,
-	});
-	qrcode.makeCode("halo");
-
+function generateCashPayment(){
+	let searchParams = new URLSearchParams(window.location.search);
+	let cat_id = searchParams.get('cat');
+	let placeId = searchParams.get('placeId');
+	var payObj = {
+		"memberCategory":cat_id,
+		"placeId":placeId,
+		"paymentType":"cash"
+	}
+	getData('generateCashPayment',payObj);
 }
 
 function callModal(content) {
@@ -337,6 +342,14 @@ function convertToRupiah(angka)
 	var angkarev = angka.toString().split('').reverse().join('');
 	for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
 	return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+}
+
+function generateQrCashPayment(data){
+	var qrcode = new QRCode("paymentBarcode", {
+		width: 200,
+		height: 200,
+	});
+	qrcode.makeCode(JSON.stringify(data));
 }
 
 function getData(param, extraParam) {
@@ -377,6 +390,9 @@ function getData(param, extraParam) {
 			break;
 		case 'generatePayment':
 			console.log('ww',extraParam);
+			directory += '/transaction/request/' + JSON.stringify(extraParam) + '/' + profile.data.accessToken;
+			break;
+		case 'generateCashPayment':
 			directory += '/transaction/request/' + JSON.stringify(extraParam) + '/' + profile.data.accessToken;
 			break;
 	}
@@ -463,6 +479,36 @@ function getData(param, extraParam) {
 				notification(500,'empty data');
 			}
 		})
+	} else if(param == 'generateCashPayment'){
+		$.ajax({
+			url: directory,
+			crossDomain: true,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"param" :"all"
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian generate cash payment', callback);
+				switch (callback.responseCode) {
+					case "200":
+						generateQrCashPayment(callback.data);
+						break;
+					default:
+						// notification(500,'empty data');
+						console.log('error cash payment',callback);
+						break;
+				}
+			},
+			error:function(callback){
+				notification(500,'empty data');
+			}
+		})
 	} else if(param == 'generatePayment'){
 		$.ajax({
 			url: directory,
@@ -482,7 +528,7 @@ function getData(param, extraParam) {
 				switch (callback.responseCode) {
 					case "200":
 						// console.log('data',callback);
-						var priceConvert = convertToRupiah(callback.data.price)
+						var priceConvert = convertToRupiah(callback.data.nominal)
 						$('.priceGenerate').html(priceConvert);
 						break;
 					default:
@@ -616,6 +662,9 @@ function getData(param, extraParam) {
 							break;
 						case 'generatePayment':
 							console.log('payment',callback);
+							break;
+						case 'paymentCash':
+							console.log('pay cash',callback);
 							break;
 					}
 					break;
@@ -856,6 +905,41 @@ function postData(uri, target, dd) {
 				loadingDeactive();
 			}
 		});
+	} else if (target == 'upgradeMember') {
+		//FIXME need upgrade member API link
+		var cat_name = dd.memberCatName;
+		var place_id = dd.placeId;
+		var cat_price = dd.memberPrice;
+		var cat_id = dd.catID;
+		delete dd.memberCatName;
+		delete dd.placeId;
+		delete dd.memberPrice;
+		delete dd.catID;
+		$.ajax({
+			url: urlService + '/member/',
+			type: "POST",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: JSON.stringify(dd),
+			success: function (callback) {
+				loadingDeactive();
+				switch (callback.responseCode) {
+					case "200":
+						notification(200, "Success upgrade membership, please proceed to payment page");
+						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price + "&cat_id=" + cat_id;
+						break;
+					default:
+						alert('msih failed',callback);
+						// window.location.href = "paymentMethod.html";
+						break;
+				}
+			},
+			error: function () {
+				loadingDeactive();
+			}
+		});
 	} else if (target == 'joinMember') {
 		var cat_name = dd.memberCatName;
 		var place_id = dd.placeId;
@@ -877,7 +961,7 @@ function postData(uri, target, dd) {
 				loadingDeactive();
 				switch (callback.responseCode) {
 					case "200":
-						notification(200, "Success join membership");
+						notification(200, "Success join membership, please proceed to payment page");
 						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price + "&cat_id=" + cat_id;
 						break;
 					default:

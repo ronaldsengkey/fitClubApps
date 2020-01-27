@@ -84,7 +84,11 @@ $(document).on('click','#manualTransfer',function(){
 })
 
 $(document).on('click','#cashPayment',function(){
-	window.location.href="paymentCash.html";
+	var cat_id = $('#cat_id').val();
+	var cat_name = $('#cat_name').val();
+	var placeId = $('#placeId').val();
+	var cat_price = $('#cat_price').val();
+	window.location.href="paymentCash.html?cat="+cat_id+"&placeId="+placeId;
 })
 
 $(document).on('click','#otherMethod',function(){
@@ -123,6 +127,7 @@ $(document).on('click','button, a',function(){
 	uri = $(this).data('uri');
 	dom = $(this).data('dom');
 	filter = $(this).data('filter');
+	var type = $(this).data('type');
 	switch (target) {
 		case "memberRegistration":
 			getPage("", target, "");
@@ -141,9 +146,14 @@ $(document).on('click','button, a',function(){
 			}else if(filter == 'trainerRegister' && target == 'user'){
 				data = {'token':12345678,'filter':filter,'name':$('#name').val(),'email':$('#email').val(),'password':$('#password').val(),
 				'specialization':specialization};
-			} else if(filter == 'joinMember' && target == 'joinMember'){
+			} else if(filter == 'joinMember' && target == 'joinMember' && type == 'upgrade'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
 				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id')};
+				target = 'upgradeMember';
+			} else if(filter == 'joinMember' && target == 'joinMember' && type == 'join'){
+				let profile = JSON.parse(localStorage.getItem('dataProfile'));
+				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id')};
+				target = 'joinMember';
 			} else if(filter == 'personalBodyProgress' && target == 'bodyProgress'){
 				data = {'prCat' : $('select#categories').val(), 'dataValue':$('#progressValue').val()};
 			}
@@ -216,9 +226,10 @@ function appendMembershipData(dataProfile){
 			'</ul>';
 			// data-uri="view" data-filter="joinMember" data-target="joinMember"
 			buttonHtml = '<button type="button" class="btn btn-primary btn-block"  data-toggle="modal" data-target="#modalPoll-1">Join Member</button>';
+			$('.btnMembership').attr('data-type','join');
 			break;
 		default:
-			html = "Hi,&nbsp;<b id='userName'>"+dataProfile.data.name+"</b><br> you'r registered on <b id='memberCatName'></b> membership.<br>"+
+			html = "Hi,&nbsp;<b id='userName'>"+dataProfile.data.name+"</b><br> you're registered on <b id='memberCatName'></b> membership.<br>"+
 			"<small><span class='fa fa-calendar'></span>&nbsp;&nbsp;Expired date &nbsp;"+
 			"<label class='label label-warning' id='expDate'></label>"+
 			"<br><span class='fa fa-star'></span>&nbsp;&nbsp;Privilage &nbsp;"+
@@ -226,6 +237,7 @@ function appendMembershipData(dataProfile){
 			classButton = '<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-uri="view" data-filter="listAvailableClass" data-target="listAvailableClass">Check Available Class</button>'; 
 			buttonHtml = '<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalPoll-1">Upgrade Member</button>';
 			$('#defineClassMemberButton').append(classButton);
+			$('.btnMembership').attr('data-type','upgrade');
 			break;
 	}
 	$('#defineMembershipContent').append(html);

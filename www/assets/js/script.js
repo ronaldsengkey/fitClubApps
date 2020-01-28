@@ -249,26 +249,33 @@ function generateQrProfile(){
 
 function getPaymentData(){
 	let searchParams = new URLSearchParams(window.location.search);
-	let param_bank = searchParams.get('bank');
+	let param_bank = searchParams.get('bank_name');
 	let cat_name_on_bank = searchParams.get('cat_name');
 	let placesId = searchParams.get('placeIdPay');
 	let catId = searchParams.get('cat');
 	let cat_manual_price = searchParams.get('cat_price');
+	let requestCatTf = searchParams.get('requestCat');
+	let oldMemberCatTf = searchParams.get('oldMemberCatManual');
+	let bankID = searchParams.get('bank');
 	$('#classLevel').html(cat_name_on_bank);
 	getBankParam(param_bank);
-	getPaymentValue(placesId,catId,cat_manual_price);
+	getPaymentValue(placesId,catId,requestCatTf,oldMemberCatTf,bankID);
 }
 
 function getBodyProgress() {
 	getData('bodyProgress');
 }
 
-function getPaymentValue(placeId,cat_id){
+function getPaymentValue(placeId,cat_id,requestCatTf,oldMemberCatTf,bankID){
 	var payObj = {
 		"memberCategory":cat_id,
 		"placeId":placeId,
-		"paymentType":"transfer"
+		"paymentType":"transfer",
+		"requestCat":requestCatTf,
+		"oldMemberCat":oldMemberCatTf,
+		"bankID":bankID
 	}
+	console.log('pay value',payObj);
 	getData('generatePayment',payObj);
 }
 
@@ -283,10 +290,14 @@ function getCategoryData(){
 	let placeId = searchParams.get('placeId');
 	let paramCatPrice = searchParams.get('cat_price');
 	let paramCatId = searchParams.get('cat_id');
+	let requestCategory = searchParams.get('requestCat');
+	let oldMemberCategory = searchParams.get('oldMemberCat');
 	$('#cat_id').val(paramCatId);
 	$('#cat_name').val(paramCatName);
 	$('#placeId').val(placeId);
 	$('#cat_price').val(paramCatPrice);
+	$('#requestCat').val(requestCategory);
+	$('#oldMemberCat').val(oldMemberCategory);
 }
 
 function getBankList(){
@@ -296,10 +307,14 @@ function getBankList(){
 	let paramPlaceId = searchParams.get('placeId');
 	let paramCatPrice = searchParams.get('cat_price');
 	console.log('param',param);
+	let requestCategory = searchParams.get('requestCat');
+	let oldMemberCategory = searchParams.get('oldMemberCat');
 	$('#cat_id_bank').val(param);
 	$('#cat_name_member').val(paramCatNameOnBank);
 	$('#placeIdManual').val(paramPlaceId);
 	$('#cat_manual_price').val(paramCatPrice);
+	$('#requestCatManual').val(requestCategory);
+	$('#oldMemberCatManual').val(oldMemberCategory);
 	getData('getBankList');
 }
 
@@ -311,10 +326,12 @@ function generateCashPayment(){
 	let searchParams = new URLSearchParams(window.location.search);
 	let cat_id = searchParams.get('cat');
 	let placeId = searchParams.get('placeId');
+	let requestCat = searchParams.get('requestCat');
 	var payObj = {
 		"memberCategory":cat_id,
 		"placeId":placeId,
-		"paymentType":"cash"
+		"paymentType":"cash",
+		"requestCat":requestCat
 	}
 	getData('generateCashPayment',payObj);
 }
@@ -530,6 +547,7 @@ function getData(param, extraParam) {
 						// console.log('data',callback);
 						var priceConvert = convertToRupiah(callback.data.nominal)
 						$('.priceGenerate').html(priceConvert);
+						$('#reqNumber').val(callback.data.requestNumber);
 						break;
 					default:
 						// notification(500,'empty data');
@@ -674,8 +692,19 @@ function getData(param, extraParam) {
 }
 
 function appendPaymentFee(data,index){
-	let paymentHtml = '<option value='+data.fee+' data-id='+data.catId+'>'+data.category+'</option>'
-	$('#memberSelect').append(paymentHtml);
+	let dataProfile = JSON.parse(localStorage.getItem("dataProfile"));
+	if(dataProfile.data.memberCat == null || dataProfile.data.memberCat == 'null'){
+		let paymentHtml = '<option value='+data.fee+' data-id='+data.catId+'>'+data.category+'</option>'
+		$('#memberSelect').append(paymentHtml);
+	} else if(dataProfile.data.memberCat == 1 || dataProfile.data.memberCat == '1'){
+		if(data.catID != 1){
+			let paymentHtml = '<option value='+data.fee+' data-id='+data.catId+'>'+data.category+'</option>'
+			$('#memberSelect').append(paymentHtml);
+		}
+	} else{
+		
+	}
+	
 }
 
 function appendDetailBank(data,index){
@@ -686,7 +715,7 @@ function appendDetailBank(data,index){
 function appendBankList(data,index){
 	let bankHtml = '<div class="row mb-5" style="margin:0px;">'+
 		'<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 container">'+
-			'<div class="card demo-card-header-pic text-center" id="bca" style="background-color: transparent;">'+
+			'<div class="card demo-card-header-pic text-center" id="'+(data.name).toLowerCase()+'" data-id='+data.id+' data-name='+data.name+' style="background-color: transparent;">'+
 				'<div style="background-image:url(assets/images/'+data.name+'.jpg); padding-top: 30%; padding-bottom:50%;"'+
 					'class="card-header align-items-flex-end">'+
 					'<h2>'+data.name+'</h2>'+
@@ -911,12 +940,13 @@ function postData(uri, target, dd) {
 		var place_id = dd.placeId;
 		var cat_price = dd.memberPrice;
 		var cat_id = dd.catID;
+		var oldMemberCat = dd.oldMemberCat;
 		delete dd.memberCatName;
 		delete dd.placeId;
 		delete dd.memberPrice;
 		delete dd.catID;
 		$.ajax({
-			url: urlService + '/member/',
+			url: urlService + '/member/join',
 			type: "POST",
 			headers: {
 				'Accept': 'application/json',
@@ -928,7 +958,7 @@ function postData(uri, target, dd) {
 				switch (callback.responseCode) {
 					case "200":
 						notification(200, "Success upgrade membership, please proceed to payment page");
-						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price + "&cat_id=" + cat_id;
+						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price + "&cat_id=" + cat_id+ "&requestCat=upgrade" + "&oldMemberCat=" + oldMemberCat;
 						break;
 					default:
 						alert('msih failed',callback);
@@ -962,7 +992,7 @@ function postData(uri, target, dd) {
 				switch (callback.responseCode) {
 					case "200":
 						notification(200, "Success join membership, please proceed to payment page");
-						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price + "&cat_id=" + cat_id;
+						window.location.href = "paymentMethod.html?cat=" + dd.memberCat + "&cat_name=" + cat_name + "&placeId=" + place_id+ "&cat_price=" + cat_price + "&cat_id=" + cat_id + "&requestCat=join";
 						break;
 					default:
 						alert('msih failed',callback);

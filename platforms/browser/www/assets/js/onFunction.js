@@ -80,7 +80,9 @@ $(document).on('click','#manualTransfer',function(){
 	var cat_name = $('#cat_name').val();
 	var placeId = $('#placeId').val();
 	var cat_price = $('#cat_price').val();
-	window.location.href="paymentManualMethod.html?cat="+cat_id+"&cat_name="+cat_name+"&placeId="+placeId+"&cat_price="+cat_price;
+	var requestCat = $('#requestCat').val();
+	var oldMemberCat = $('#oldMemberCat').val();
+	window.location.href="paymentManualMethod.html?cat="+cat_id+"&cat_name="+cat_name+"&placeId="+placeId+"&cat_price="+cat_price+"&requestCat="+requestCat+"&oldMemberCat="+oldMemberCat;
 })
 
 $(document).on('click','#cashPayment',function(){
@@ -88,7 +90,9 @@ $(document).on('click','#cashPayment',function(){
 	var cat_name = $('#cat_name').val();
 	var placeId = $('#placeId').val();
 	var cat_price = $('#cat_price').val();
-	window.location.href="paymentCash.html?cat="+cat_id+"&placeId="+placeId;
+	var requestCat = $('#requestCat').val();
+	var oldMemberCat = $('#oldMemberCat').val();
+	window.location.href="paymentCash.html?cat="+cat_id+"&placeId="+placeId+"&requestCat="+requestCat+"&oldMemberCat="+oldMemberCat;
 })
 
 $(document).on('click','#otherMethod',function(){
@@ -100,26 +104,36 @@ $(document).on('click','#bca',function(){
 	var cat_name = $('#cat_name_member').val();
 	var placeGymId = $('#placeIdManual').val();
 	var cat_price = $('#cat_manual_price').val();
-	var bank_name = $(this).attr('id');
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price;
+
+	var requestCat = $('#requestCatManual').val();
+	var oldMemberCatManual = $('#oldMemberCatManual').val();
+	var bank_name = $(this).data('id');
+	var bank_name_real = $(this).attr('id');
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price+"&requestCat="+requestCat+"&oldMemberCatManual="+oldMemberCatManual+"&bank_name="+bank_name_real;
 })
 
 $(document).on('click','#bri',function(){
 	var cat_id = $('#cat_id_bank').val();
-	var bank_name = $(this).attr('id');
+	var bank_name = $(this).data('id');
+	var bank_name_real = $(this).attr('id');
 	var placeGymId = $('#placeIdManual').val();
 	var cat_name = $('#cat_name_member').val();
 	var cat_price = $('#cat_manual_price').val();
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price;
+	var requestCat = $('#requestCatManual').val();
+	var oldMemberCatManual = $('#oldMemberCatManual').val();
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price+"&requestCat="+requestCat+"&oldMemberCatManual="+oldMemberCatManual+"&bank_name="+bank_name_real;
 })
 
 $(document).on('click','#mandiri',function(){
 	var cat_id = $('#cat_id_bank').val();
 	var cat_name = $('#cat_name_member').val();
-	var bank_name = $(this).attr('id');
+	var bank_name = $(this).data('id');
+	var bank_name_real = $(this).attr('id');
 	var placeGymId = $('#placeIdManual').val();
 	var cat_price = $('#cat_manual_price').val();
-	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price;
+	var requestCat = $('#requestCatManual').val();
+	var oldMemberCatManual = $('#oldMemberCatManual').val();
+	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price+"&requestCat="+requestCat+"&oldMemberCatManual="+oldMemberCatManual+"&bank_name="+bank_name_real;
 })
 
 $(document).on('click','button, a',function(){
@@ -148,11 +162,11 @@ $(document).on('click','button, a',function(){
 				'specialization':specialization};
 			} else if(filter == 'joinMember' && target == 'joinMember' && type == 'upgrade'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
-				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id')};
+				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id'),"requestCat":"upgrade","oldMemberCat":profile.data.memberCat};
 				target = 'upgradeMember';
 			} else if(filter == 'joinMember' && target == 'joinMember' && type == 'join'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
-				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id')};
+				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id'),"requestCat":"join"};
 				target = 'joinMember';
 			} else if(filter == 'personalBodyProgress' && target == 'bodyProgress'){
 				data = {'prCat' : $('select#categories').val(), 'dataValue':$('#progressValue').val()};
@@ -263,7 +277,35 @@ $(document).on('change','#categoriesB', function(){
 
 $(document).on('click','.uploadFile', function(){
 	var imgFile = $('#payProve64').val();
-	
+	var reqNumber = $('#reqNumber').val();
+	let dataProfile = JSON.parse(localStorage.getItem("dataProfile"));
+	var dataUpload = {
+		"file":imgFile,
+		"transactionId":reqNumber
+	};
+	$.ajax({
+		url: 'http://192.168.0.5:8888/ronaldSengkey/fitClub/api/v1'+'/upload/'+dataProfile.data.accessToken,
+		  crossDomain: true,
+		  method: "POST",
+		  headers: {
+			  "Content-Type": "application/json",
+			  "Accept": "*/*",
+			  "Cache-Control": "no-cache"
+	  },
+		data: JSON.stringify(dataUpload),
+		success: function(callback){
+			console.log('kembalian upload file',callback);
+			switch(callback.responseCode){
+				case "500":
+					alert(callback)
+					break;
+				case "200":
+					notification(200,"success upload file");
+				default:
+					break;
+			}
+		}
+	})
 });
 
 $(document).on('keyup','.search', function(){

@@ -1,7 +1,7 @@
 ﻿// const e = require("express");
 
-// var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
-var urlService = 'http://192.168.0.44:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://192.168.0.44:8888/ronaldSengkey/fitClub/api/v1';
 // var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
@@ -371,12 +371,13 @@ function generateQrCashPayment(data){
 
 function getData(param, extraParam) {
 	let profile = JSON.parse(localStorage.getItem('dataProfile'));
+	console.log(profile);
 	let directory = urlService;
 	switch (param) {
-		case "classHistory":
-			// directory += '/class/memberClass/' + profile.data.accessToken;
-			directory += '/class/memberClass/history/' + profile.data.accessToken;
-			break;
+		// case "classHistory":
+		// 	// directory += '/class/memberClass/' + profile.data.accessToken;
+		// 	directory += '/class/memberClass/history/' + profile.data.accessToken;
+		// 	break;
 		case 'classList':
 			directory += '/class/' + profile.data.accessToken;
 			break;

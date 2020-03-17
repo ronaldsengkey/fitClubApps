@@ -297,7 +297,10 @@ $(document).on('click','.uploadFile', function(){
 			console.log('kembalian upload file',callback);
 			switch(callback.responseCode){
 				case "500":
-					alert(callback)
+					notification(500,"Server error");
+					break;
+				case "406":
+					notification(500,"File already uploaded");
 					break;
 				case "200":
 					notification(200,"success upload file");

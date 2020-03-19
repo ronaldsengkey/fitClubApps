@@ -198,7 +198,7 @@ $(document).on('click','button, a',function(){
 			postData(uri,target,data);
 		} else if(uri == 'view'){
 			if(filter == 'listClass'){
-				window.location.href="classList.html";
+				window.location.href="classSchedule.html";
 			} else if(filter == 'profile'){
 				window.location.href="profile.html";
 			} else if(filter == 'membership'){
@@ -249,7 +249,7 @@ function appendMembershipData(dataProfile){
 			"<br><span class='fa fa-star'></span>&nbsp;&nbsp;Privilage &nbsp;"+
 			"<br><span class='fa fa-book'></span>&nbsp;&nbsp;Policy &nbsp;</small>";
 			classButton = '<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-uri="view" data-filter="listAvailableClass" data-target="listAvailableClass">Check Available Class</button>'; 
-			buttonHtml = '<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalPoll-1">Upgrade Member</button>';
+			buttonHtml = '<button type="button" class="btn btn-primary btn-block upgradeMember" data-toggle="modal" data-target="#modalPoll-1">Upgrade Member</button>';
 			$('#defineClassMemberButton').append(classButton);
 			$('.btnMembership').attr('data-type','upgrade');
 			break;

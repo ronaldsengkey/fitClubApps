@@ -1,4 +1,4 @@
-﻿$(function () {
+$(function () {
     // if($('#line_chart').length > 0){
     //     new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
     // }

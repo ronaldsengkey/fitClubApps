@@ -1,16 +1,2 @@
-The MIT License (MIT)
-
-Copyright (c) 2014-2017, Jon Schlinkert.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF ME
+CKEDITOR.plugins.setLang("liststyle","cs",{armenian:"Arménské",bulletedTitle:"Vlastnosti odrážek",circle:"Kroužky",decimal:"Arabská čísla (1, 2, 3, atd.)",decimalLeadingZero:"Arabská čísla uvozená nulou (01, 02, 03, atd.)",disc:"Kolečka",georgian:"Gruzínské (an, ban, gan, atd.)",lowerAlpha:"Malá latinka (a, b, c, d, e, atd.)",lowerGreek:"Malé řecké (alpha, beta, gamma, atd.)",lowerRoman:"Malé římské (i, ii, iii, iv, v, atd.)",none:"Nic",notset:"\x3cnenastaveno\x3e",numberedTitle:"Vlastnosti číslování",
+square:"Čtverce",start:"Počátek",type:"Typ",upperAlpha:"Velká latinka (A, B, C, D, E, atd.)",upperRoman:"Velké římské (I, II, III, IV, V, atd.)",validateStartNumber:"Číslování musí začínat celým číslem."});

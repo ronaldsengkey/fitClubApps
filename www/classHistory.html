@@ -160,6 +160,26 @@ width:100%;height:100%; opacity: 0.8;">
 	</div>
 	<!-- end container card -->
 </div>
+<script type="text/javascript">
+	// function listener cordova
+	document.addEventListener("deviceready", onDeviceReady, false);
+
+	function onDeviceReady() {
+		document.addEventListener("backbutton", onBackKeyDown, false);
+		// document.getElementById("consignmentNote").addEventListener("click", dialogConfirm);
+		// window.addEventListener("orientationchange",updateOrientation);
+	}
+
+	function onBackKeyDown() {
+		var url = window.location.href.replace(/^.*[\\\/]/, '');
+		if (url == "classHistory.html") {
+			navigator.app.exitApp();
+		}
+
+		// navigator.app.exitApp();
+	}
+	// End function Listener cordova
+</script>
 
 </body>
 <!-- JQuery -->

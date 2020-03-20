@@ -1,4 +1,4 @@
-$(document).on('click','#newProgress',(function(e){	
+﻿$(document).on('click','#newProgress',(function(e){	
 	$('#bodyProgress').modal('show');
 }))
 
@@ -134,6 +134,42 @@ $(document).on('click','#mandiri',function(){
 	var requestCat = $('#requestCatManual').val();
 	var oldMemberCatManual = $('#oldMemberCatManual').val();
 	window.location.href="paymentManual.html?cat=" + cat_id +"&bank=" +bank_name+"&cat_name=" +cat_name+"&placeIdPay="+placeGymId+"&cat_price="+cat_price+"&requestCat="+requestCat+"&oldMemberCatManual="+oldMemberCatManual+"&bank_name="+bank_name_real;
+})
+
+$(document).on('change','#demo',function(){
+	console.log('woe',$(this).val());
+	var datee = $(this).val();
+	let profile = JSON.parse(localStorage.getItem('dataProfile'));
+	$('#classScheduleData').empty();
+	$('#classScheduleData').html('');
+	$.ajax({
+		url: urlService + '/class/schedule/'+profile.data.accessToken,
+		crossDomain: true,
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "*/*",
+			"Cache-Control": "no-cache",
+			"param" :JSON.stringify({'byDate':datee})
+		},
+		timeout: 8000,
+		tryCount: 0,
+		retryLimit: 3,
+		success: function (callback) {
+			console.log('kembalian onchange demo', callback);
+			switch (callback.responseCode) {
+				case "200":
+					callback.data.forEach(domClassSchedule);
+					break;
+				default:
+					notification(500,'empty data');
+					break;
+			}
+		},
+		error:function(callback){
+			notification(500,'empty data');
+		}
+	})
 })
 
 $(document).on('click','button, a',function(){

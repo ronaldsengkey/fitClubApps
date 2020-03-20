@@ -1,7 +1,7 @@
 ﻿// const e = require("express");
 
-// var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
-var urlService = 'http://192.168.0.54:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://192.168.0.54:8888/ronaldSengkey/fitClub/api/v1';
 // var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
@@ -560,6 +560,38 @@ function getData(param, extraParam) {
 				notification(500,'empty data');
 			}
 		})
+	} else if(param == 'classSchedule'){
+		$.ajax({
+			url: directory,
+			crossDomain: true,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"param" :JSON.stringify({'byDate':moment().format('YYYY-MM-DD')})
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian class schedule data', callback);
+				switch (callback.responseCode) {
+					case "200":
+						callback.data.forEach(domClassSchedule);
+						break;
+					case "404":
+						appendEmptySchedule();
+						break;
+					default:
+						notification(500,'empty class data');
+						break;
+				}
+			},
+			error:function(callback){
+				notification(500,'empty class data');
+			}
+		})
 	} else if(param == 'bodyProgressParam'){
 		var cate = "";
 		if(extraParam == "0" || extraParam == 0){
@@ -597,104 +629,103 @@ function getData(param, extraParam) {
 				notification(500,'empty data');
 			}
 		})
-	}
-	$.ajax({
-		url: directory,
-		crossDomain: true,
-		method: "GET",
-		headers: param != 'bodyProgress' ? {
-			"Content-Type": "application/json",
-			"Accept": "*/*",
-			"Cache-Control": "no-cache",
-		} : {
-			"Content-Type": "application/json",
-			"Accept": "*/*",
-			"Cache-Control": "no-cache",
-			"param" :"all"
-		},
-		timeout: 8000,
-		tryCount: 0,
-		retryLimit: 3,
-		success: function (callback) {
-			console.log('kembalian', callback);
-			console.log('kembalian p', param);
-			console.log('kembalian d', directory);
-			switch (callback.responseCode) {
-				case "500":
-					this.tryCount++;
-					if (this.tryCount < this.retryLimit) {
-						$.ajax(this);
-					} else if (this.tryCount == this.retryLimit) {
-						let empty500 = '<h3 class="h3 mb-5">Server Error</h3>'
-						$('#classContent').append(empty500);
-					}
-					break;
-				case "401":
-					logout();
-					break;
-				case "404":
-					if (param == 'classHistory') {
-						appendEmptyClass();
-					} else if (param == 'bodyProgress') {
-						appendEmptyChart();
-						$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
-					} else if (param == 'availableClass') {
-						appendEmptyAvailableClass();
-					} else {
-						alert(callback.responseMessage);
-					}
-					break;
-				case "200":
-					switch(param){
-						case "classSchedule":
-							callback.data.forEach(domClassSchedule);
-							break;
-						case "classList":
-							callback.data.forEach(appendClassData);
-							break;
-						case "classHistory":
-							callback.data.forEach(domClassHistory);
-							break;
-						case "classDetail":
-							domClassDetail(callback.data);
-							break;
-						case "bodyProgress":
-							progressData = callback.data;
-							console.log('callback bp',callback.data);
-							defineChart(callback.data);
+	} else {
+		$.ajax({
+			url: directory,
+			crossDomain: true,
+			method: "GET",
+			headers: param != 'bodyProgress' ? {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+			} : {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"param" :"all"
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian', callback);
+				console.log('kembalian p', param);
+				console.log('kembalian d', directory);
+				switch (callback.responseCode) {
+					case "500":
+						this.tryCount++;
+						if (this.tryCount < this.retryLimit) {
+							$.ajax(this);
+						} else if (this.tryCount == this.retryLimit) {
+							let empty500 = '<h3 class="h3 mb-5">Server Error</h3>'
+							$('#classContent').append(empty500);
+						}
+						break;
+					case "401":
+						logout();
+						break;
+					case "404":
+						if (param == 'classHistory') {
+							appendEmptyClass();
+						} else if (param == 'bodyProgress') {
+							appendEmptyChart();
 							$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
-							break;
-						case "availableClass":
-							callback.data.forEach(appendClassAvailableData);
-							break;
-						case "getBankList":
-							callback.data.forEach(appendBankList);
-							break;
-						case "placeMember":
-							callback.data.forEach(appendPlace);
-							break;
-						case "bankParam":
-							console.log('kembalian bank param',callback.data);
-							break;
-						case "paymentFee":
-							let dataProfile = JSON.parse(localStorage.getItem("dataProfile"));
-							if(dataProfile.data.memberCat == 2 || dataProfile.data.memberCat == '2'){
-								$('.upgradeMember').remove();
-							} else {
-								callback.data.forEach(appendPaymentFee);
-							}
-							break;
-						case 'generatePayment':
-							console.log('payment',callback);
-							break;
-						case 'paymentCash':
-							console.log('pay cash',callback);
-							break;
-					}
-					break;
+						} else if (param == 'availableClass') {
+							appendEmptyAvailableClass();
+						} else {
+							alert(callback.responseMessage);
+						}
+						break;
+					case "200":
+						switch(param){
+							case "classList":
+								callback.data.forEach(appendClassData);
+								break;
+							case "classHistory":
+								callback.data.forEach(domClassHistory);
+								break;
+							case "classDetail":
+								domClassDetail(callback.data);
+								break;
+							case "bodyProgress":
+								progressData = callback.data;
+								console.log('callback bp',callback.data);
+								defineChart(callback.data);
+								$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
+								break;
+							case "availableClass":
+								callback.data.forEach(appendClassAvailableData);
+								break;
+							case "getBankList":
+								callback.data.forEach(appendBankList);
+								break;
+							case "placeMember":
+								callback.data.forEach(appendPlace);
+								break;
+							case "bankParam":
+								console.log('kembalian bank param',callback.data);
+								break;
+							case "paymentFee":
+								let dataProfile = JSON.parse(localStorage.getItem("dataProfile"));
+								if(dataProfile.data.memberCat == 2 || dataProfile.data.memberCat == '2'){
+									$('.upgradeMember').remove();
+								} else {
+									callback.data.forEach(appendPaymentFee);
+								}
+								break;
+							case 'generatePayment':
+								console.log('payment',callback);
+								break;
+							case 'paymentCash':
+								console.log('pay cash',callback);
+								break;
+						}
+						break;
+				}
 			}
-		}
-	})
+		})
+	}
+	
 }
 
 function appendPaymentFee(data,index){
@@ -821,7 +852,7 @@ function domClassSchedule(data, index) {
 		'<div class="col-4">' +
 		'<h6 class="h6 text-default">' + data.startTime + '</h6>' +
 		'<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>' +
-		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
+		// '<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
 		'<h6 class="h6 text-default">' + data.endTime + '</h6>' +
 		'</div>' +
 		'</div>' +
@@ -841,6 +872,13 @@ function appendEmptyAvailableClass(){
 		'<div class="clearfix"></div>' +
 		'<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-uri="view" data-filter="goToClassMembership" data-target="goToClassMembership">Join as a Member now!</button>';
 	$('#classAvailableListData').append(html);
+}
+
+function appendEmptySchedule(){
+	let htmlSchedule = '<img src="https://uploads-ssl.webflow.com/5d1f053cee3b9da3d699a858/5d2aaced187e9368f0c098c9_gym.svg" class="mt-5" style="width:55%">'+
+		'<h3 class="h3 mb-5">Oopss !!<br> Empty schedule data</h3>' +
+		'<div class="clearfix"></div>';
+	$('#classScheduleData').append(htmlSchedule);
 }
 
 function toClassDetail(id) {

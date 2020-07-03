@@ -1,8 +1,8 @@
 ﻿// const e = require("express");
 
 // var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
-var urlService = 'https://c52e81e2ee30.ngrok.io/ronaldSengkey/fitClub/api/v1';
-// var urlService = 'http://192.168.1.12:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'https://c52e81e2ee30.ngrok.io/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://192.168.0.24:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -43,6 +43,7 @@ $(function () {
 	}
 	if ($('#bodyProgressPage').length > 0) {
 		validate('bodyProgress');
+		getData('bodyProgressParam',0);
 	}
 	if($('#classAvailableListPage').length > 0){
 		validate('availableClass');
@@ -401,7 +402,7 @@ function getData(param, extraParam) {
 			directory += '/class/memberClass/' + profile.data.accessToken;
 			break;
 		case "placeMember":
-			directory += '/place/' + profile.data.accessToken;
+			directory += '/place';
 			break;
 		case 'paymentFee':
 			directory += '/member/fee/' + profile.data.accessToken;
@@ -608,6 +609,37 @@ function getData(param, extraParam) {
 				"Accept": "*/*",
 				"Cache-Control": "no-cache",
 				"param" :cate
+			},
+			timeout: 8000,
+			tryCount: 0,
+			retryLimit: 3,
+			success: function (callback) {
+				console.log('kembalian body progress param', callback);
+				switch (callback.responseCode) {
+					case "200":
+						emptyChart();
+						defineChart(callback.data);
+						$.getScript("assets/js/pages/charts/chartjs.js", function (data, textStatus, jqxhr) {});
+						break;
+					default:
+						notification(500,'empty data');
+						break;
+				}
+			},
+			error:function(callback){
+				notification(500,'empty data');
+			}
+		})
+	} else if(param == 'placeMember'){
+		$.ajax({
+			url: directory,
+			crossDomain: true,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Cache-Control": "no-cache",
+				"token" :profile.data.accessToken
 			},
 			timeout: 8000,
 			tryCount: 0,
@@ -837,6 +869,12 @@ function domClassHistory(data,index){
 }
 
 function domClassSchedule(data, index) {
+	let beforeCheck = '';
+	if(moment(data.startDate).isBefore(moment())){
+
+	} else {
+		beforeCheck = '<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>';
+	}
 	let schedHtml = '<div class="card card-cascade wider">' +
 		'<div class="card-body card-body-cascade text-center">' +
 		'<div class="row">' +
@@ -850,10 +888,9 @@ function domClassSchedule(data, index) {
 		'<a class="like">' +
 		'</a></div></div></div></div>' +
 		'<div class="col-4">' +
-		'<h6 class="h6 text-default">' + data.startTime + '</h6>' +
-		'<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>' +
-		// '<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
-		'<h6 class="h6 text-default">' + data.endTime + '</h6>' +
+		'<h6 class="h6 text-default">' + data.startTime + '</h6>';
+		schedHtml += beforeCheck;
+		schedHtml += '<h6 class="h6 text-default">' + data.endTime + '</h6>' +
 		'</div>' +
 		'</div>' +
 		'</div></div><div class="clearfix"></div><br/>';

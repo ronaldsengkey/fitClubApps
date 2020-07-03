@@ -1,8 +1,8 @@
 ﻿// const e = require("express");
 
 // var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
-// var urlService = 'https://c52e81e2ee30.ngrok.io/ronaldSengkey/fitClub/api/v1';
-var urlService = 'http://192.168.0.24:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'https://c52e81e2ee30.ngrok.io/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://192.168.0.24:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -846,23 +846,18 @@ function domClassDetail(result) {
 // 		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
 
 function domClassHistory(data,index){
-	let histHtml = '<div class="card card-cascade wider">' +
-		'<div class="card-body card-body-cascade text-center">' +
+	let histHtml = '<div class="card card-cascade wider" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
+		'<div class="card-body card-body-cascade" style="flex: 1 1 auto; padding-left: 1rem;">' +
 		'<div class="row">' +
-		'<div class="col-8" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="col-12" style="padding-left:3%;">' +
 		'<div class="news">' +
 		'<div class="excerpt">' +
 		'<div class="brief">' +
 		'<h5 class="blue-text">' + data.className + '</h5></div>' +
 		'<div class="feed-footer">' +
 		'<div>' + data.coachName + '</div>' +
-		'<a class="like">' +
-		'</a></div></div></div></div>' +
-		'<div class="col-4">' +
-		'<h6 class="h6 text-default">' + data.startTime + '</h6>' +
-		'<h3> - </h3>'+
-		'<h6 class="h6 text-default">' + data.endTime + '</h6>' +
-		'</div>' +
+		'<small class="text-default">' + moment(data.startTime, "HH:mm:ss").format('HH:mm') + ' - '+ moment(data.endTime, "HH:mm:ss").format('HH:mm')+'</small>'
+		'</div></div></div></div>' +
 		'</div>' +
 		'</div></div><div class="clearfix"></div><br/>';
 	$('#classContent').append(histHtml);
@@ -875,22 +870,20 @@ function domClassSchedule(data, index) {
 	} else {
 		beforeCheck = '<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>';
 	}
-	let schedHtml = '<div class="card card-cascade wider">' +
-		'<div class="card-body card-body-cascade text-center">' +
+	let schedHtml = '<div class="card card-cascade wider" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
+		'<div class="card-body card-body-cascade" style="flex: 1 1 auto; padding-left: 1rem;">' +
 		'<div class="row">' +
-		'<div class="col-8" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+		'<div class="col-8" style="padding-left:3%;">' +
 		'<div class="news">' +
 		'<div class="excerpt">' +
 		'<div class="brief">' +
 		'<h5 class="blue-text">' + data.className + '</h5></div>' +
 		'<div class="feed-footer">' +
 		'<div>' + data.coachName + '</div>' +
-		'<a class="like">' +
-		'</a></div></div></div></div>' +
-		'<div class="col-4">' +
-		'<h6 class="h6 text-default">' + data.startTime + '</h6>';
+		'<small class="text-default">' + moment(data.startTime, "HH:mm:ss").format('HH:mm')+ ' - '+ moment(data.endTime, "HH:mm:ss").format('HH:mm')+'</small>' +
+		'</div></div></div></div>' +
+		'<div class="col-4" style="align-self:center;">';
 		schedHtml += beforeCheck;
-		schedHtml += '<h6 class="h6 text-default">' + data.endTime + '</h6>' +
 		'</div>' +
 		'</div>' +
 		'</div></div><div class="clearfix"></div><br/>';
@@ -935,18 +928,15 @@ function appendClassAvailableData(data, index) {
 		'</div>'+
 	'</div>';
 	// onclick="toClassDetail(' + data.id + ')"
-	let html = '<div class="card card-cascade wider classAvailableeList mb-3" data-id=' + data.classId + ' data-class="' + data.className + '">' +
-		'<div class="card-body card-body-cascade text-center">' +
-		'<div class="row"><div class="col-8" style="border-right:solid 1px #ddd;padding-left:3%;">' +
+	let html = '<div class="card card-cascade wider classAvailableeList mb-3" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent" data-id=' + data.classId + ' data-class="' + data.className + '">' +
+		'<div class="card-body card-body-cascade text-center" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
+		'<div class="row"><div class="col-12" style="padding-left:3%;">' +
 		'<div class="news">' +
-		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.className + '</h5></div>' +
+		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.className + '</h5><small class="text-default"> by : '+data.coachName+'</small></div>' +
 		'</div>' +
 		'</div>'+
 	'</div>' +
-	'<div class="col-4">' +
-	'<h6 class="h6 text-default"> by : '+data.coachName+'</h6>' +
 	// '<button type="button" class="text-white btn purple-gradient btn-md btn-block btn-floating" data-target="classDetail" data-filter="classDetail" data-uri="read">Join</button>' +
-	'</div>' +
 	'</div>' +
 	'</div>' +
 	'</div>';

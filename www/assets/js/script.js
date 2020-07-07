@@ -866,7 +866,8 @@ function domClassHistory(data,index){
 
 function domClassSchedule(data, index) {
 	let beforeCheck = '';
-	if(moment(data.startDate).isBefore(moment())){
+	let formattedFirst = moment(data.startDate).format('YYYY-MM-DD') + 'T' + data.startTime;
+	if(moment(formattedFirst).isBefore(moment())){
 
 	} else {
 		beforeCheck = '<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>';

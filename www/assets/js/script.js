@@ -930,8 +930,8 @@ function appendClassAvailableData(data, index) {
 		'</div>'+
 	'</div>';
 	// onclick="toClassDetail(' + data.id + ')"
-	let html = '<div class="card card-cascade wider classAvailableeList mb-3" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent" data-id=' + data.classId + ' data-class="' + data.className + '">' +
-		'<div class="card-body card-body-cascade" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
+	let html = '<div class="card card-cascade wider classAvailableeList mb-3" style="box-shadow:none; background-color:transparent" data-id=' + data.classId + ' data-class="' + data.className + '">' +
+		'<div class="card-body card-body-cascade" style="box-shadow:none; background-color:transparent">' +
 		'<div class="row"><div class="col-12" style="padding-left:3%;">' +
 		'<div class="news">' +
 		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.className + '</h5><small class="text-default"> by : '+data.coachName+'</small></div>' +

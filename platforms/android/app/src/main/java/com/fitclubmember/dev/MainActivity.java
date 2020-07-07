@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.fitclub.dev;
+package com.fitclubmember.dev;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

@@ -2,7 +2,7 @@
 
 // var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
 var urlService = 'http://fitclubdev.zapto.org:8888/ronaldSengkey/fitClub/api/v1';
-// var urlService = 'http://192.168.0.24:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://192.168.0.228:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -815,7 +815,7 @@ function domClassDetail(result) {
 	'<div class="col-lg-3 col-3">'+
 		'<div class="news">'+
 			'<div class="label">'+
-				'<img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(20)-mini.jpg" style="width:110%;" class="rounded-circle z-depth-1-half">'+
+				'<img src="https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg" style="width:110%;" class="rounded-circle z-depth-1-half">'+
 			'</div>'+
 		'</div>'+
 	'</div>'+
@@ -823,19 +823,19 @@ function domClassDetail(result) {
 		'<div class="excerpt mb-0">'+
 				'<div class="brief">'+
 				'<a class="blue-text">'+result.coachName+'</a>'+
-				'<div class="date">3 days ago</div>'+
+				// '<div class="date">3 days ago</div>'+
 				'</div>'+
-				'<div class="feed-footer">'+
-				'<span>'+
-					'<a>47</a>'+
-				'</span>'+
-				'<a class="thumbs" data-toggle="tooltip" data-placement="top" title="" data-original-title="I like it">'+
-					'<i class="fas fa-thumbs-up"></i>'+
-				'</a>'+
-				'<a class="thumbs" data-toggle="tooltip" data-placement="top" title="" data-original-title="I dont like it">'+
-					'<i class="fas fa-thumbs-down"></i>'+
-				'</a>'+
-				'</div>'+
+				// '<div class="feed-footer">'+
+				// '<span>'+
+				// 	'<a>47</a>'+
+				// '</span>'+
+				// '<a class="thumbs" data-toggle="tooltip" data-placement="top" title="" data-original-title="I like it">'+
+				// 	'<i class="fas fa-thumbs-up"></i>'+
+				// '</a>'+
+				// '<a class="thumbs" data-toggle="tooltip" data-placement="top" title="" data-original-title="I dont like it">'+
+				// 	'<i class="fas fa-thumbs-down"></i>'+
+				// '</a>'+
+				// '</div>'+
 			'</div>'+
 	'</div>'+
 	'</div>';
@@ -846,7 +846,7 @@ function domClassDetail(result) {
 // 		'<a class="btn-floating btn-sm peach-gradient waves-effect waves-light text-white"><i class="fas fa-times"></i></a>' +
 
 function domClassHistory(data,index){
-	let histHtml = '<div class="card card-cascade wider" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
+	let histHtml = '<div class="card card-cascade wider" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent; margin-bottom:1.5rem;">' +
 		'<div class="card-body card-body-cascade" style="flex: 1 1 auto; padding-left: 1rem;">' +
 		'<div class="row">' +
 		'<div class="col-12" style="padding-left:3%;">' +
@@ -856,6 +856,7 @@ function domClassHistory(data,index){
 		'<h5 class="blue-text">' + data.className + '</h5></div>' +
 		'<div class="feed-footer">' +
 		'<div>' + data.coachName + '</div>' +
+		'<small class="text-default">' + moment(data.startDate).format('DD MMMM YYYY')+'</small><br/>'+
 		'<small class="text-default">' + moment(data.startTime, "HH:mm:ss").format('HH:mm') + ' - '+ moment(data.endTime, "HH:mm:ss").format('HH:mm')+'</small>'
 		'</div></div></div></div>' +
 		'</div>' +
@@ -929,7 +930,7 @@ function appendClassAvailableData(data, index) {
 	'</div>';
 	// onclick="toClassDetail(' + data.id + ')"
 	let html = '<div class="card card-cascade wider classAvailableeList mb-3" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent" data-id=' + data.classId + ' data-class="' + data.className + '">' +
-		'<div class="card-body card-body-cascade text-center" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
+		'<div class="card-body card-body-cascade" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
 		'<div class="row"><div class="col-12" style="padding-left:3%;">' +
 		'<div class="news">' +
 		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.className + '</h5><small class="text-default"> by : '+data.coachName+'</small></div>' +

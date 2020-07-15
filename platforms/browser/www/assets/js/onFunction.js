@@ -198,11 +198,11 @@ $(document).on('click','button, a',function(){
 				'specialization':specialization};
 			} else if(filter == 'joinMember' && target == 'joinMember' && type == 'upgrade'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
-				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id'),"requestCat":"upgrade","oldMemberCat":profile.data.memberCat};
+				data = {'token':profile.data.accessToken,'memberPrice':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberCat':$('#memberSelect option:selected').data('id').toString(),"requestCat":"upgrade","oldMemberCat":profile.data.memberCat};
 				target = 'upgradeMember';
 			} else if(filter == 'joinMember' && target == 'joinMember' && type == 'join'){
 				let profile = JSON.parse(localStorage.getItem('dataProfile'));
-				data = {'token':profile.data.accessToken,'memberCat':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberPrice':$('#memberSelect option:selected').val(),'catID':$('#memberSelect option:selected').data('id'),"requestCat":"join"};
+				data = {'token':profile.data.accessToken,'memberPrice':$('select#memberSelect').val(),'memberCatName':$('#memberSelect option:selected').text(),'placeId':$('#placeGym option:selected').val(),'memberCat':$('#memberSelect option:selected').data('id').toString(),"requestCat":"join"};
 				target = 'joinMember';
 			} else if(filter == 'personalBodyProgress' && target == 'bodyProgress'){
 				data = {'prCat' : $('select#categories').val(), 'dataValue':$('#progressValue').val()};
@@ -269,7 +269,9 @@ function appendMembershipData(dataProfile){
 	var html;
 	var buttonHtml;
 	var classButton;
+	console.log('ss',dataProfile.data.memberCat);
 	switch(dataProfile.data.memberCat){
+		case undefined:
 		case null:
 			html = 'Below are the privileges you will get if u join as a member:'+
 			'<ul><li>tes 1</li><li>tes 2</li><li>tes 3</li>'+
@@ -319,8 +321,9 @@ $(document).on('click','.uploadFile', function(){
 		"file":imgFile,
 		"transactionId":reqNumber
 	};
+	console.log('uploaddd',dataUpload);
 	$.ajax({
-		url: 'http://192.168.0.5:8888/ronaldSengkey/fitClub/api/v1'+'/upload/'+dataProfile.data.accessToken,
+		url: urlService+'/upload/payment/'+dataProfile.data.accessToken,
 		  crossDomain: true,
 		  method: "POST",
 		  headers: {
@@ -340,6 +343,7 @@ $(document).on('click','.uploadFile', function(){
 					break;
 				case "200":
 					notification(200,"success upload file");
+					window.location.href = 'index.html';
 				default:
 					break;
 			}
@@ -410,15 +414,20 @@ $(document).on('click', '#submitOtp', function(){
 		data: JSON.stringify(dd),
 		success: function(callback){
 			let text = "";
-			switch(callback){
-				case 500:
+			console.log('called',callback);
+			console.log('call',callback.responseCode);
+			switch(callback.responseCode){
+				case "500":
 					text = "Oops internal server error, please try again!"
 					break;
-				default:
+				case "200":
 					text = "Confirmation Success, Please login"
 					break;
+				default:
+					text = "Oops internal server error, please try again!"
+					break;
 			}
-			notification(callback,text)
+			notification(callback.responseCode,text)
 			setTimeout(function () {
 				if($(".sweet-alert").length > 0){
 					swal.close();

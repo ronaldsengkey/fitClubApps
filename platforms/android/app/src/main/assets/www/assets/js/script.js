@@ -2,7 +2,7 @@
 
 // var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
 var urlService = 'http://fitclubdev.zapto.org:8888/ronaldSengkey/fitClub/api/v1';
-// var urlService = 'http://192.168.0.228:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://192.168.0.22:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -76,7 +76,7 @@ function logout() {
 }
 
 function notification(cat, T) {
-	if (cat == 200) {
+	if (cat == 200 || cat == "200") {
 		// alert(T);
 		swal({
 			title: "Proccess success!",
@@ -87,7 +87,7 @@ function notification(cat, T) {
 		$(".sweet-alert").css({
 			'background-color': '#2196F3'
 		});
-	} else if (cat == 500) {
+	} else if (cat == 500 || cat == "500") {
 		// alert(T);
 		swal({
 			title: "Proccess failed!",
@@ -151,7 +151,7 @@ function validate(param) {
 				break;
 			case 'membership':
 				appendMembershipData(dataProfile);
-				getData('placeMember');
+				getData('placeMemberInside');
 				getData('paymentFee');
 				break;
 			case 'classDetail':
@@ -191,6 +191,7 @@ function validate(param) {
 }
 
 function appendPlace(data,index){
+	console.log('daa',data);
 	let placeHtml = '<option value='+data.partnerId+'>'+data.name+'</option>';
 	$('#placeGym').append(placeHtml);
 }
@@ -293,7 +294,7 @@ function getCategoryData(){
 	let paramCatId = searchParams.get('cat_id');
 	let requestCategory = searchParams.get('requestCat');
 	let oldMemberCategory = searchParams.get('oldMemberCat');
-	$('#cat_id').val(paramCatId);
+	$('#cat_id').val(param);
 	$('#cat_name').val(paramCatName);
 	$('#placeId').val(placeId);
 	$('#cat_price').val(paramCatPrice);
@@ -307,7 +308,6 @@ function getBankList(){
 	let paramCatNameOnBank = searchParams.get('cat_name');
 	let paramPlaceId = searchParams.get('placeId');
 	let paramCatPrice = searchParams.get('cat_price');
-	console.log('param',param);
 	let requestCategory = searchParams.get('requestCat');
 	let oldMemberCategory = searchParams.get('oldMemberCat');
 	$('#cat_id_bank').val(param);
@@ -401,7 +401,7 @@ function getData(param, extraParam) {
 		case "availableClass":
 			directory += '/class/memberClass/' + profile.data.accessToken;
 			break;
-		case "placeMember":
+		case "placeMemberInside":
 			directory += '/place';
 			break;
 		case 'paymentFee':
@@ -731,7 +731,7 @@ function getData(param, extraParam) {
 							case "getBankList":
 								callback.data.forEach(appendBankList);
 								break;
-							case "placeMember":
+							case "placeMemberInside":
 								callback.data.forEach(appendPlace);
 								break;
 							case "bankParam":
@@ -766,7 +766,7 @@ function appendPaymentFee(data,index){
 		let paymentHtml = '<option value='+data.fee+' data-id='+data.catId+'>'+data.category+'</option>'
 		$('#memberSelect').append(paymentHtml);
 	} else if(dataProfile.data.memberCat == 1 || dataProfile.data.memberCat == '1'){
-		if(data.catID != 1){
+		if(data.catId != 1){
 			let paymentHtml = '<option value='+data.fee+' data-id='+data.catId+'>'+data.category+'</option>'
 			$('#memberSelect').append(paymentHtml);
 		}
@@ -930,8 +930,8 @@ function appendClassAvailableData(data, index) {
 		'</div>'+
 	'</div>';
 	// onclick="toClassDetail(' + data.id + ')"
-	let html = '<div class="card card-cascade wider classAvailableeList mb-3" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent" data-id=' + data.classId + ' data-class="' + data.className + '">' +
-		'<div class="card-body card-body-cascade" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
+	let html = '<div class="card card-cascade wider classAvailableeList mb-3" style="box-shadow:none; background-color:transparent" data-id=' + data.classId + ' data-class="' + data.className + '">' +
+		'<div class="card-body card-body-cascade" style="box-shadow:none; background-color:transparent">' +
 		'<div class="row"><div class="col-12" style="padding-left:3%;">' +
 		'<div class="news">' +
 		'<div class="excerpt"><div class="brief"><h5 class="blue-text">' + data.className + '</h5><small class="text-default"> by : '+data.coachName+'</small></div>' +
@@ -970,7 +970,7 @@ function postData(uri, target, dd) {
 	loadingActive();
 	if (target == 'login') {
 		$.ajax({
-			url: urlService + '/' + target,
+			url: urlService + '/' + target + '/member',
 			type: "POST",
 			data: JSON.stringify(dd),
 			timeout: 5000,
@@ -1011,6 +1011,7 @@ function postData(uri, target, dd) {
 		});
 	} else if (target == 'upgradeMember') {
 		//FIXME need upgrade member API link
+		console.log('dd awal upgrade',dd);
 		var cat_name = dd.memberCatName;
 		var place_id = dd.placeId;
 		var cat_price = dd.memberPrice;
@@ -1050,10 +1051,11 @@ function postData(uri, target, dd) {
 		var place_id = dd.placeId;
 		var cat_price = dd.memberPrice;
 		var cat_id = dd.catID;
-		delete dd.memberCatName;
-		delete dd.placeId;
-		delete dd.memberPrice;
+		// delete dd.memberCatName;
+		// delete dd.placeId;
+		// delete dd.memberPrice;
 		delete dd.catID;
+		console.log('dd sblm tembak',dd);
 		$.ajax({
 			url: urlService + '/member/join',
 			type: "POST",

@@ -1,8 +1,8 @@
 ﻿// const e = require("express");
 
 // var urlService = 'http://localhost:8888/ronaldSengkey/fitClub/api/v1';
-var urlService = 'http://fitclubdev.zapto.org:8888/ronaldSengkey/fitClub/api/v1';
-// var urlService = 'http://192.168.0.22:8888/ronaldSengkey/fitClub/api/v1';
+// var urlService = 'http://fitclubdev.zapto.org:8888/ronaldSengkey/fitClub/api/v1';
+var urlService = 'http://192.168.0.22:8888/ronaldSengkey/fitClub/api/v1';
 var fieldTextInput = '<input type="text" class="form-control fieldText">';
 var fieldEmailInput = '<input type="email" class="form-control fieldEmail">';
 var fieldPswdInput = '<input type="password" class="form-control fieldPswd">';
@@ -126,7 +126,9 @@ function loadingDeactive() {
 function getDetailData() {
 	let searchParams = new URLSearchParams(window.location.search);
 	let param = searchParams.get('id');
+	let schedule = searchParams.get('schedule');
 	getData('classDetail', param);
+	$('#schedule_id').val(schedule);
 }
 
 function validate(param) {
@@ -810,7 +812,7 @@ function domClassDetail(result) {
 	console.log('result class',result);
 	$('#className').html(result.className);
 	$('#classDesc').html(result.descript);
-	$('#schedule_id').val(result.scheduleId);
+	// $('#schedule_id').val(result.scheduleId);
 	let coachHtml = '<div class="row mb-3">'+
 	'<div class="col-lg-3 col-3">'+
 		'<div class="news">'+
@@ -870,7 +872,7 @@ function domClassSchedule(data, index) {
 	if(moment(formattedFirst).isBefore(moment())){
 
 	} else {
-		beforeCheck = '<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ')"><i class="fas fa-check"></i></a>';
+		beforeCheck = '<a class="btn-floating btn-sm purple-gradient waves-effect waves-light text-white" onclick="toClassDetail(' + data.classId + ','+data.scheduleId+')"><i class="fas fa-check"></i></a>';
 	}
 	let schedHtml = '<div class="card card-cascade wider" style="border-bottom:1px inset lightgrey; box-shadow:none; background-color:transparent">' +
 		'<div class="card-body card-body-cascade" style="flex: 1 1 auto; padding-left: 1rem;">' +
@@ -913,11 +915,11 @@ function appendEmptySchedule(){
 	$('#classScheduleData').append(htmlSchedule);
 }
 
-function toClassDetail(id) {
+function toClassDetail(id,scheduleId) {
 	// let profileData = parseUserData();
 	// let data = {'token' : profileData.data.accessToken,'classId' : id};
 	// postData('','detailClass',data);
-	window.location.href = "classDetail.html?id=" + id;
+	window.location.href = "classDetail.html?id=" + id+'&schedule='+scheduleId;
 }
 
 function appendClassAvailableData(data, index) {

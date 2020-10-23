@@ -273,9 +273,9 @@ function appendMembershipData(dataProfile){
 	switch(dataProfile.data.memberCat){
 		case undefined:
 		case null:
-			html = 'Below are the privileges you will get if u join as a member:'+
-			'<ul><li>tes 1</li><li>tes 2</li><li>tes 3</li>'+
-			'</ul>';
+			html = 'Below are the privileges you will get if u join as a member:';
+			// '<ul><li>tes 1</li><li>tes 2</li><li>tes 3</li>'+
+			// '</ul>';
 			// data-uri="view" data-filter="joinMember" data-target="joinMember"
 			buttonHtml = '<button type="button" class="btn btn-primary btn-block"  data-toggle="modal" data-target="#modalPoll-1">Join Member</button>';
 			$('.btnMembership').attr('data-type','join');
@@ -295,6 +295,12 @@ function appendMembershipData(dataProfile){
 	$('#defineMembershipContent').append(html);
 	$('#defineMemberButton').append(buttonHtml);
 }
+
+$(document).on('click','.openOTP',async function(){
+	let content = '<input type="text" class="form-control" id="otpCode">' +
+		"<b><small style='color:#fff;'>Your verification code has been send in your email address, Please check your email, and verify your account</small></b>"
+	callModal(content);
+})
 
 function appendProfile(dataProfile){
 	$('#profName').append(dataProfile.data.name);
